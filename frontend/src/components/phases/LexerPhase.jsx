@@ -184,7 +184,7 @@ export default function LexerPhase({
           <div>
             {/* DFA Visualizer */}
             {lexerTrace.length > 0 && simStep < lexerTrace.length && (
-              <LexerDfa activeState={lexerTrace[simStep].state} />
+              <LexerDfa activeState={(!isPlaying && simStep === 0) ? null : lexerTrace[simStep].state} />
             )}
 
             {/* Scanner state variables */}

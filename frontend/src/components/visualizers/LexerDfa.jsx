@@ -9,10 +9,10 @@ const DFA_NODES = [
 
 const DFA_EDGES = [
   { from: 'START',         to: 'IN_IDENTIFIER', label: 'a-z',     labelX: 148, labelY: 96,  path: 'M 97 130 L 222 92' },
-  { from: 'IN_IDENTIFIER', to: 'IN_IDENTIFIER', label: 'a-z,0-9', labelX: 252, labelY: 32,  path: 'M 244 46 C 235 22, 268 22, 278 49' },
+  { from: 'IN_IDENTIFIER', to: 'IN_IDENTIFIER', label: 'a-z,0-9', labelX: 250, labelY: 28,  path: 'M 233 52 C 218 20, 282 20, 267 52' },
   { from: 'IN_IDENTIFIER', to: 'DONE',          label: 'delim',   labelX: 345, labelY: 96,  path: 'M 278 92 L 402 130' },
   { from: 'START',         to: 'IN_NUMBER',      label: '0-9',     labelX: 148, labelY: 204, path: 'M 97 170 L 222 208' },
-  { from: 'IN_NUMBER',     to: 'IN_NUMBER',      label: '0-9',     labelX: 252, labelY: 272, path: 'M 244 254 C 235 278, 268 278, 278 251' },
+  { from: 'IN_NUMBER',     to: 'IN_NUMBER',      label: '0-9',     labelX: 250, labelY: 276, path: 'M 233 248 C 218 280, 282 280, 267 248' },
   { from: 'IN_NUMBER',     to: 'DONE',           label: 'delim',   labelX: 345, labelY: 204, path: 'M 278 208 L 402 170' },
   { from: 'START',         to: 'DONE',           label: 'op/pct',  labelX: 250, labelY: 164, path: 'M 100 150 L 400 150' },
 ];
