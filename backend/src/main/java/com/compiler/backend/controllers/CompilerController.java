@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/compiler")
-@CrossOrigin(origins = "*") // For development with frontend on different port
+@CrossOrigin(origins = "https://compiler-visualizer-three.vercel.app")
 public class CompilerController {
 
     @Autowired
