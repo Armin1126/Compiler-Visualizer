@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/compiler")
-@CrossOrigin(origins = "https://compiler-visualizer-three.vercel.app")
+@CrossOrigin(origins = "https://compilervisualizer.vercel.app\")
 public class CompilerController {
 
     @Autowired
