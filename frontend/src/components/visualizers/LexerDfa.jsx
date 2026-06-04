@@ -1,20 +1,20 @@
 import { useState } from 'react';
 
 const DFA_NODES = [
-  { id: 'START',         label: 'START',  cx: 70,  cy: 130, r: 30 },
-  { id: 'IN_IDENTIFIER', label: 'IDENT',  cx: 250, cy: 55,  r: 30 },
-  { id: 'IN_NUMBER',     label: 'NUM',    cx: 250, cy: 205, r: 30 },
-  { id: 'DONE',          label: 'DONE',   cx: 430, cy: 130, r: 30 },
+  { id: 'START',         label: 'START',  cx: 70,  cy: 150, r: 30 },
+  { id: 'IN_IDENTIFIER', label: 'IDENT',  cx: 250, cy: 75,  r: 30 },
+  { id: 'IN_NUMBER',     label: 'NUM',    cx: 250, cy: 225, r: 30 },
+  { id: 'DONE',          label: 'DONE',   cx: 430, cy: 150, r: 30 },
 ];
 
 const DFA_EDGES = [
-  { from: 'START',         to: 'IN_IDENTIFIER', label: 'a-z',     labelX: 148, labelY: 76,  path: 'M 97 110 L 222 72' },
-  { from: 'IN_IDENTIFIER', to: 'IN_IDENTIFIER', label: 'a-z,0-9', labelX: 250, labelY: 10,  path: 'M 244 26 C 235 2, 268 2, 278 29' },
-  { from: 'IN_IDENTIFIER', to: 'DONE',          label: 'delim',   labelX: 345, labelY: 76,  path: 'M 278 72 L 402 110' },
-  { from: 'START',         to: 'IN_NUMBER',      label: '0-9',     labelX: 148, labelY: 184, path: 'M 97 150 L 222 188' },
-  { from: 'IN_NUMBER',     to: 'IN_NUMBER',      label: '0-9',     labelX: 250, labelY: 255, path: 'M 244 234 C 235 258, 268 258, 278 231' },
-  { from: 'IN_NUMBER',     to: 'DONE',           label: 'delim',   labelX: 345, labelY: 184, path: 'M 278 188 L 402 150' },
-  { from: 'START',         to: 'DONE',           label: 'op/pct',  labelX: 250, labelY: 144, path: 'M 100 130 L 400 130' },
+  { from: 'START',         to: 'IN_IDENTIFIER', label: 'a-z',     labelX: 148, labelY: 96,  path: 'M 97 130 L 222 92' },
+  { from: 'IN_IDENTIFIER', to: 'IN_IDENTIFIER', label: 'a-z,0-9', labelX: 252, labelY: 32,  path: 'M 244 46 C 235 22, 268 22, 278 49' },
+  { from: 'IN_IDENTIFIER', to: 'DONE',          label: 'delim',   labelX: 345, labelY: 96,  path: 'M 278 92 L 402 130' },
+  { from: 'START',         to: 'IN_NUMBER',      label: '0-9',     labelX: 148, labelY: 204, path: 'M 97 170 L 222 208' },
+  { from: 'IN_NUMBER',     to: 'IN_NUMBER',      label: '0-9',     labelX: 252, labelY: 272, path: 'M 244 254 C 235 278, 268 278, 278 251' },
+  { from: 'IN_NUMBER',     to: 'DONE',           label: 'delim',   labelX: 345, labelY: 204, path: 'M 278 208 L 402 170' },
+  { from: 'START',         to: 'DONE',           label: 'op/pct',  labelX: 250, labelY: 164, path: 'M 100 150 L 400 150' },
 ];
 
 export default function LexerDfa({ activeState }) {
@@ -31,7 +31,7 @@ export default function LexerDfa({ activeState }) {
 
   return (
     <div className="dfa-svg-container">
-      <svg width="510" height="270" style={{ display: 'block', overflow: 'visible' }}>
+      <svg width="510" height="300" style={{ display: 'block', overflow: 'visible' }}>
         <defs>
           <filter id="dfa-node-shadow" x="-25%" y="-25%" width="150%" height="150%">
             <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="rgba(44,36,30,0.15)" />
@@ -61,9 +61,9 @@ export default function LexerDfa({ activeState }) {
         </defs>
 
         {/* Entry arrow to START */}
-        <path d="M 18 130 L 37 130" stroke="rgba(92,73,58,0.45)" strokeWidth="2"
+        <path d="M 18 150 L 37 150" stroke="rgba(92,73,58,0.45)" strokeWidth="2"
           fill="none" markerEnd="url(#dfa-arrow-entry)" />
-        <text x="10" y="124" fontFamily="var(--font-terminal)" fontSize="8"
+        <text x="10" y="144" fontFamily="var(--font-terminal)" fontSize="8"
           fill="var(--text-muted)" textAnchor="middle">▶</text>
 
         {/* Edges */}
