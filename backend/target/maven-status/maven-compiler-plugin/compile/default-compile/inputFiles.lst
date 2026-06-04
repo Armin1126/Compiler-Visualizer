@@ -1,0 +1,15 @@
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\BackendApplication.java
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\controllers\CompilerController.java
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\models\AssemblyInstruction.java
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\models\AstNode.java
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\models\CompilationResult.java
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\models\CompileRequest.java
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\models\Symbol.java
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\models\TacInstruction.java
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\models\Token.java
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\services\CodegenService.java
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\services\IcgService.java
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\services\LexerService.java
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\services\OptimizerService.java
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\services\ParserService.java
+C:\Users\Srivatsan\.gemini\antigravity\scratch\compiler-visualizer\backend\src\main\java\com\compiler\backend\services\SemanticAnalyzerService.java

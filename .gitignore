@@ -1,0 +1,15 @@
+# Node modules and build files ignored by subdirectory gitignores
+
+# Scratch scripts in the root
+*_layout.js
+*_phases.js
+*_utils.js
+find_*.js
+refactor_*.js
+replace_*.js
+
+# IDE / OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
