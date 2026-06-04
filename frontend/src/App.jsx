@@ -52,7 +52,8 @@ function App() {
   const handleCompile = async () => {
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:8080/api/compiler/compile', {
+      const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      const res = await axios.post(`${baseUrl}/api/compiler/compile`, {
         sourceCode: code
       });
       setResult(res.data);
@@ -80,7 +81,8 @@ function App() {
       setOptimizerTab('table');
     } catch (err) {
       console.error(err);
-      alert('Compilation error. Is the backend running on port 8080?');
+      const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+      alert(`Compilation error. Is the backend running? (Endpoint: ${baseUrl})`);
     } finally {
       setLoading(false);
     }
