@@ -973,11 +973,13 @@ tbody tr:hover {
   font-family: var(--font-mono);
   font-size: 0.85rem;
   color: var(--text-muted);
+  max-width: 360px;
 }
 
 .status-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 1.5rem;
   border-bottom: 1px dashed rgba(92, 73, 58, 0.1);
   padding-bottom: 0.25rem;
 }
