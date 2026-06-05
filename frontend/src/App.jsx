@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Play, Code, Layers, ChevronLeft } from 'lucide-react';
 import { DEFAULT_CODE, PHASES, PHASE_LABELS } from './utils/constants';
@@ -88,6 +88,38 @@ function App() {
     }
   };
 
+  // History-aware navigation helper so browser Back/Forward works
+  const navigate = (v) => {
+    setView(v);
+    try {
+      const url = v === 'landing' ? '/' : '/console';
+      window.history.pushState({ view: v }, '', url);
+    } catch {
+      void 0;
+    }
+  };
+
+  // Initialize history state and listen for back/forward
+  useEffect(() => {
+    try {
+      const initUrl = window.location.pathname.includes('console') || window.location.hash.includes('console') ? '/console' : '/';
+      window.history.replaceState({ view }, '', initUrl);
+    } catch {
+      void 0;
+    }
+
+    const onPop = (e) => {
+      const st = e.state;
+      if (st && st.view) setView(st.view);
+      else {
+        const v = window.location.pathname.includes('console') || window.location.hash.includes('console') ? 'console' : 'landing';
+        setView(v);
+      }
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+
   const renderVisualizer = () => {
     if (!result) return <div className="placeholder">Awaiting compilation...</div>;
     
@@ -132,13 +164,13 @@ function App() {
       
       {view === 'landing' ? (
         <LandingPage 
-          view={view} setView={setView} 
+          view={view} setView={navigate} 
           terminalLogs={terminalLogs} setTerminalLogs={setTerminalLogs} 
         />
       ) : (
         <div className="app-container">
           <div className="header">
-            <div className="console-back-nav" onClick={() => { setTerminalLogs([]); setView('landing'); }}>
+            <div className="console-back-nav" onClick={() => { setTerminalLogs([]); navigate('landing'); }}>
               <ChevronLeft size={18} />
               <span>[ ESCAPE ]</span>
             </div>
