@@ -52,6 +52,7 @@ function App() {
   const [editorHighlight, setEditorHighlight] = useState(null);
   const [leftWidth, setLeftWidth] = useState(420);
   const dragRef = useRef(false);
+  const splitterRef = useRef(null);
   const [selectedToken, setSelectedToken] = useState(null);
 
   const handleCompile = async () => {
@@ -128,6 +129,7 @@ function App() {
   }, []);
 
   useEffect(()=>{
+    // Fallback mouse handlers (kept for older browsers)
     const onMove = (e) => {
       if(!dragRef.current) return;
       const container = document.querySelector('.main-content');
@@ -142,6 +144,43 @@ function App() {
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
     return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
+  }, []);
+
+  // Pointer-based splitter handler: more reliable across elements and captures pointer
+  useEffect(()=>{
+    const splitter = splitterRef.current;
+    if(!splitter) return;
+    const onPointerDown = (e) => {
+      try{ splitter.setPointerCapture(e.pointerId); }catch{ void 0; }
+      dragRef.current = true;
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+
+      const onPointerMove = (ev) => {
+        if(!dragRef.current) return;
+        const container = document.querySelector('.main-content');
+        if(!container) return;
+        const rect = container.getBoundingClientRect();
+        const x = ev.clientX - rect.left;
+        const min = 260; const max = rect.width - 260;
+        const newW = Math.max(min, Math.min(max, x));
+        setLeftWidth(newW);
+      };
+
+      const onPointerUp = (ev) => {
+        dragRef.current = false;
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+        try{ splitter.releasePointerCapture(ev.pointerId); }catch{ void 0; }
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerup', onPointerUp);
+      };
+
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerup', onPointerUp);
+    };
+    splitter.addEventListener('pointerdown', onPointerDown);
+    return () => { splitter.removeEventListener('pointerdown', onPointerDown); };
   }, []);
 
   const renderVisualizer = () => {
@@ -250,7 +289,7 @@ function App() {
               </div>
             </div>
 
-            <div className="splitter" onMouseDown={()=>{ dragRef.current = true; document.body.style.cursor = 'col-resize'; document.body.style.userSelect = 'none'; }} />
+            <div ref={splitterRef} className="splitter" onMouseDown={()=>{ dragRef.current = true; document.body.style.cursor = 'col-resize'; document.body.style.userSelect = 'none'; }} />
 
             <div className="panel" style={{ flex: 1 }}>
               <div className="panel-header">
