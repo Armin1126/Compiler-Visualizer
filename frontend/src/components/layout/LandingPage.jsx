@@ -35,9 +35,9 @@ export default function LandingPage({ view, setView, terminalLogs, setTerminalLo
         <div className="landing-container">
           {/* Nav Header */}
           <header className="landing-nav">
-            <div className="nav-logo">
+              <div className="nav-logo">
               <Terminal size={22} />
-              <span>COMPILER.NEXUS</span>
+              <span>compiler visualizer</span>
             </div>
             
           </header>
