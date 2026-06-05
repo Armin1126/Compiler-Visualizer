@@ -285,6 +285,7 @@ function App() {
         />
       ) : (
         <div className="app-container">
+          <div className="debug-leftwidth" aria-hidden>{leftWidth}px</div>
           <div className="toolbar compact">
             <div className="toolbar-left">
               <div className="console-back-nav" onClick={() => { setTerminalLogs([]); navigate('landing'); }}>
