@@ -39,11 +39,7 @@ export default function LandingPage({ view, setView, terminalLogs, setTerminalLo
               <Terminal size={22} />
               <span>COMPILER.NEXUS</span>
             </div>
-            <div className="nav-status-container">
-              <div className="nav-target-badge">
-                <span>TARGET: TINYLANG VM</span>
-              </div>
-            </div>
+            
           </header>
 
           {/* Hero Section */}
