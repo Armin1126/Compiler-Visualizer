@@ -103,7 +103,8 @@ function App() {
   useEffect(() => {
     try {
       const initUrl = window.location.pathname.includes('console') || window.location.hash.includes('console') ? '/console' : '/';
-      window.history.replaceState({ view }, '', initUrl);
+      const initialView = window.location.pathname.includes('console') || window.location.hash.includes('console') ? 'console' : 'landing';
+      window.history.replaceState({ view: initialView }, '', initUrl);
     } catch {
       void 0;
     }

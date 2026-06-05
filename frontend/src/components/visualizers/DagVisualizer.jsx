@@ -13,8 +13,6 @@ function DagVisualizer({ ast, tac }) {
 
   const handleZoomIn = useCallback(() => setZoom(z => Math.min(MAX_ZOOM, +(z + ZOOM_STEP).toFixed(2))), []);
   const handleZoomOut = useCallback(() => setZoom(z => Math.max(MIN_ZOOM, +(z - ZOOM_STEP).toFixed(2))), []);
-  const handleFit = useCallback(() => setZoom(0.75), []);
-  const handleReset = useCallback(() => setZoom(1), []);
 
   const handleWheel = useCallback((e) => {
     if (e.ctrlKey || e.metaKey) {

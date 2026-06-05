@@ -26,37 +26,50 @@ public class SemanticAnalyzerService {
     }
 
     private void analyzeStatement(AstNode stmt) {
-        if (stmt.getType().equals("DeclareStmt")) {
-            String varName = stmt.getLeft().getValue();
-            if (symbolTable.containsKey(varName)) {
-                errors.add("Semantic error: Variable '" + varName + "' is already declared.");
-            } else {
-                symbolTable.put(varName, new Symbol(varName, "Number", true, true, null));
+        switch (stmt.getType()) {
+            case "DeclareStmt" -> {
+                String varName = stmt.getLeft().getValue();
+                if (symbolTable.containsKey(varName)) {
+                    errors.add("Semantic error: Variable '" + varName + "' is already declared.");
+                } else {
+                    symbolTable.put(varName, new Symbol(varName, "Number", true, true, null));
+                }
+                analyzeExpression(stmt.getRight());
             }
-            analyzeExpression(stmt.getRight());
-        } else if (stmt.getType().equals("AssignStmt")) {
-            String varName = stmt.getLeft().getValue();
-            if (!symbolTable.containsKey(varName)) {
-                errors.add("Semantic error: Variable '" + varName + "' is used before declaration.");
-            } else {
-                Symbol sym = symbolTable.get(varName);
-                sym.setInitialized(true);
+            case "AssignStmt" -> {
+                String varName = stmt.getLeft().getValue();
+                if (!symbolTable.containsKey(varName)) {
+                    errors.add("Semantic error: Variable '" + varName + "' is used before declaration.");
+                } else {
+                    Symbol sym = symbolTable.get(varName);
+                    sym.setInitialized(true);
+                }
+                analyzeExpression(stmt.getRight());
             }
-            analyzeExpression(stmt.getRight());
+            default -> {
+                // no-op for other statement types
+            }
         }
     }
 
     private void analyzeExpression(AstNode expr) {
-        if (expr.getType().equals("BinaryExpression")) {
-            analyzeExpression(expr.getLeft());
-            analyzeExpression(expr.getRight());
-        } else if (expr.getType().equals("Identifier")) {
-            String varName = expr.getValue();
-            if (!symbolTable.containsKey(varName)) {
-                errors.add("Semantic error: Variable '" + varName + "' is used before declaration.");
+        switch (expr.getType()) {
+            case "BinaryExpression" -> {
+                analyzeExpression(expr.getLeft());
+                analyzeExpression(expr.getRight());
             }
-        } else if (expr.getType().equals("NumberLiteral")) {
-            // Numbers are always valid
+            case "Identifier" -> {
+                String varName = expr.getValue();
+                if (!symbolTable.containsKey(varName)) {
+                    errors.add("Semantic error: Variable '" + varName + "' is used before declaration.");
+                }
+            }
+            case "NumberLiteral" -> {
+                // Numbers are always valid
+            }
+            default -> {
+                // no-op
+            }
         }
     }
 }
