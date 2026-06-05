@@ -228,6 +228,44 @@ function App() {
 
   const scannerIndex = (activePhase === 'LEXER' && lexerTrace && lexerTrace.length > 0 && simStep < lexerTrace.length) ? lexerTrace[simStep].charIndex : null;
 
+  // Fallback: overlay-based drag that guarantees pointer capture across the viewport
+  const startOverlayDrag = (startEvent) => {
+    startEvent.preventDefault();
+    const container = document.querySelector('.main-content');
+    if(!container) return;
+    const rect = container.getBoundingClientRect();
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.left = '0';
+    overlay.style.top = '0';
+    overlay.style.right = '0';
+    overlay.style.bottom = '0';
+    overlay.style.zIndex = '99999';
+    overlay.style.cursor = 'col-resize';
+    overlay.style.background = 'transparent';
+    document.body.appendChild(overlay);
+
+    const onMove = (ev) => {
+      const x = ev.clientX - rect.left;
+      const min = 260; const max = rect.width - 260;
+      const newW = Math.max(min, Math.min(max, x));
+      setLeftWidth(newW);
+    };
+
+    const onUp = () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      try{ document.body.removeChild(overlay); }catch{ void 0; }
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+  };
+
   return (
     <>
       <div className="scanlines"></div>
@@ -289,7 +327,7 @@ function App() {
               </div>
             </div>
 
-            <div ref={splitterRef} className="splitter" onMouseDown={()=>{ dragRef.current = true; document.body.style.cursor = 'col-resize'; document.body.style.userSelect = 'none'; }} />
+            <div ref={splitterRef} className="splitter" onMouseDown={(e)=>{ dragRef.current = true; document.body.style.cursor = 'col-resize'; document.body.style.userSelect = 'none'; startOverlayDrag(e); }} />
 
             <div className="panel" style={{ flex: 1 }}>
               <div className="panel-header">
