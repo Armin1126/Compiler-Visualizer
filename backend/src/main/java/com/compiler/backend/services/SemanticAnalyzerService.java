@@ -1,12 +1,12 @@
 package com.compiler.backend.services;
 
-import com.compiler.backend.models.AstNode;
-import com.compiler.backend.models.Symbol;
-import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+import com.compiler.backend.models.AstNode;
+import com.compiler.backend.models.Symbol;
 
 @Service
 public class SemanticAnalyzerService {

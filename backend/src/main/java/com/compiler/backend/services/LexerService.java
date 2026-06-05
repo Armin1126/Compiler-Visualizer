@@ -1,12 +1,13 @@
 package com.compiler.backend.services;
 
-import com.compiler.backend.models.Token;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.springframework.stereotype.Service;
+
+import com.compiler.backend.models.Token;
 
 @Service
 public class LexerService {
@@ -32,7 +33,6 @@ public class LexerService {
         
         while (matcher.find()) {
             int start = matcher.start();
-            int end = matcher.end();
             String value = matcher.group();
             
             if (matcher.group("WHITESPACE") != null) {
@@ -55,7 +55,7 @@ public class LexerService {
             else if (matcher.group("PUNCTUATION") != null) type = "PUNCTUATION";
             else type = "ERROR";
             
-            tokens.add(new Token(type, value, line, column, start, end));
+            tokens.add(new Token(type, value, line, column, start, matcher.end()));
             column += value.length();
         }
         

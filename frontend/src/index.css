@@ -262,6 +262,39 @@ body::before {
   color: var(--text-muted);
 }
 
+.tinylang-quickstart {
+  margin-top: 1rem;
+  padding: 0.85rem;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.6);
+}
+.tinylang-quickstart h4 {
+  margin-bottom: 0.35rem;
+  font-family: var(--font-cyber);
+  font-size: 0.95rem;
+  color: var(--accent-primary);
+}
+.tinylang-quickstart .quick-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.tinylang-quickstart .quick-list {
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+}
+.tinylang-example {
+  background: rgba(44, 36, 30, 0.03);
+  border: 1px dashed var(--border-color);
+  padding: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  border-radius: 6px;
+}
+
 /* Immersive Cyber Button */
 .cyber-btn {
   font-family: var(--font-cyber);
@@ -627,6 +660,7 @@ body::before {
   padding: 0 1.25rem 1.25rem 1.25rem;
   background: rgba(255, 255, 255, 0.45);
   position: relative;
+  font-family: var(--font-mono);
 }
 
 .editor-textarea {

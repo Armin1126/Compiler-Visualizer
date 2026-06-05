@@ -1,10 +1,11 @@
 package com.compiler.backend.services;
 
-import com.compiler.backend.models.TacInstruction;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.compiler.backend.models.TacInstruction;
 
 @Service
 public class OptimizerService {
@@ -21,17 +22,16 @@ public class OptimizerService {
             if (isOperator(op) && isNumber(arg1) && isNumber(arg2)) {
                 int val1 = Integer.parseInt(arg1);
                 int val2 = Integer.parseInt(arg2);
-                int result = 0;
-                
-                switch (op) {
-                    case "+": result = val1 + val2; break;
-                    case "-": result = val1 - val2; break;
-                    case "*": result = val1 * val2; break;
-                    case "/": result = val1 / val2; break;
-                    case "%": result = val1 % val2; break;
-                }
-                
-                optimized.add(new TacInstruction("=", String.valueOf(result), null, inst.getResult()));
+                int folded = switch (op) {
+                    case "+" -> val1 + val2;
+                    case "-" -> val1 - val2;
+                    case "*" -> val1 * val2;
+                    case "/" -> val1 / val2;
+                    case "%" -> val1 % val2;
+                    default -> 0;
+                };
+
+                optimized.add(new TacInstruction("=", String.valueOf(folded), null, inst.getResult()));
             } 
             // Algebraic Simplification (e.g. x * 1 -> x)
             else if (op.equals("*") && "1".equals(arg2)) {

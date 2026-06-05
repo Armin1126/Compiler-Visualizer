@@ -55,6 +55,19 @@ export default function LandingPage({ view, setView, terminalLogs, setTerminalLo
               <button className="cyber-btn" onClick={() => setView('console')}>
                 LAUNCH TERMINAL CONSOLE <Play size={18} fill="currentColor" />
               </button>
+
+              <div className="tinylang-quickstart">
+                <h4>TinyLang Quickstart</h4>
+                <p className="quick-desc">TinyLang is a minimal language used by this visualizer. Use <strong>let</strong> declarations and simple arithmetic. Statements must end with <strong>;</strong>.</p>
+                <ul className="quick-list">
+                  <li><strong>Declaration:</strong> let x = 10;</li>
+                  <li><strong>Assignment:</strong> let y = x + 5;</li>
+                  <li><strong>Operators:</strong> + - * / %</li>
+                </ul>
+                <pre className="tinylang-example">{`let a = 10;
+let b = 20;
+let result = a * 2 + b;`}</pre>
+              </div>
             </div>
 
             {/* Interactive Mock Terminal */}

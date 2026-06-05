@@ -1,12 +1,26 @@
 package com.compiler.backend.controllers;
 
-import com.compiler.backend.models.*;
-import com.compiler.backend.services.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.compiler.backend.models.AssemblyInstruction;
+import com.compiler.backend.models.AstNode;
+import com.compiler.backend.models.CompilationResult;
+import com.compiler.backend.models.CompileRequest;
+import com.compiler.backend.models.TacInstruction;
+import com.compiler.backend.models.Token;
+import com.compiler.backend.services.CodegenService;
+import com.compiler.backend.services.IcgService;
+import com.compiler.backend.services.LexerService;
+import com.compiler.backend.services.OptimizerService;
+import com.compiler.backend.services.ParserService;
+import com.compiler.backend.services.SemanticAnalyzerService;
 
 @RestController
 @RequestMapping("/api/compiler")

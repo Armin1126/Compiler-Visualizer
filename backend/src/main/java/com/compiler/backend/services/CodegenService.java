@@ -1,11 +1,12 @@
 package com.compiler.backend.services;
 
-import com.compiler.backend.models.AssemblyInstruction;
-import com.compiler.backend.models.TacInstruction;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.compiler.backend.models.AssemblyInstruction;
+import com.compiler.backend.models.TacInstruction;
 
 @Service
 public class CodegenService {
@@ -26,14 +27,14 @@ public class CodegenService {
                 assembly.add(new AssemblyInstruction("LOAD", "R1", arg1, "Load left operand"));
                 assembly.add(new AssemblyInstruction("LOAD", "R2", arg2, "Load right operand"));
                 
-                String asmOp = "";
-                switch (op) {
-                    case "+": asmOp = "ADD"; break;
-                    case "-": asmOp = "SUB"; break;
-                    case "*": asmOp = "MUL"; break;
-                    case "/": asmOp = "DIV"; break;
-                    case "%": asmOp = "MOD"; break;
-                }
+                String asmOp = switch (op) {
+                    case "+" -> "ADD";
+                    case "-" -> "SUB";
+                    case "*" -> "MUL";
+                    case "/" -> "DIV";
+                    case "%" -> "MOD";
+                    default -> "";
+                };
                 
                 assembly.add(new AssemblyInstruction(asmOp, "ACC", "R1", "R2", "Perform " + op));
                 assembly.add(new AssemblyInstruction("STORE", res, "ACC", "Store result"));
