@@ -151,6 +151,7 @@ function App() {
     const splitter = splitterRef.current;
     if(!splitter) return;
     const onPointerDown = (e) => {
+      console.log('splitter pointerdown', { pointerId: e.pointerId, x: e.clientX, y: e.clientY });
       try{ splitter.setPointerCapture(e.pointerId); }catch{ void 0; }
       dragRef.current = true;
       document.body.style.cursor = 'col-resize';
@@ -230,6 +231,8 @@ function App() {
 
   // Fallback: overlay-based drag that guarantees pointer capture across the viewport
   const startOverlayDrag = (startEvent) => {
+    // eslint-disable-next-line no-console
+    console.log('startOverlayDrag', { x: startEvent.clientX, y: startEvent.clientY });
     startEvent.preventDefault();
     const container = document.querySelector('.main-content');
     if(!container) return;
@@ -246,6 +249,8 @@ function App() {
     document.body.appendChild(overlay);
 
     const onMove = (ev) => {
+      // eslint-disable-next-line no-console
+      console.log('overlay move', { x: ev.clientX, y: ev.clientY });
       const x = ev.clientX - rect.left;
       const min = 260; const max = rect.width - 260;
       const newW = Math.max(min, Math.min(max, x));
@@ -253,6 +258,8 @@ function App() {
     };
 
     const onUp = () => {
+      // eslint-disable-next-line no-console
+      console.log('overlay up');
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
       try{ document.body.removeChild(overlay); }catch{ void 0; }
