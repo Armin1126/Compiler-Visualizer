@@ -31,7 +31,7 @@ export default function LexerDfa({ activeState }) {
 
   return (
     <div className="dfa-svg-container">
-      <svg width="510" height="300" style={{ display: 'block', overflow: 'visible' }}>
+      <svg width="620" height="360" style={{ display: 'block', overflow: 'visible' }}>
         <defs>
           <filter id="dfa-node-shadow" x="-25%" y="-25%" width="150%" height="150%">
             <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="rgba(44,36,30,0.15)" />
@@ -44,27 +44,27 @@ export default function LexerDfa({ activeState }) {
           </filter>
 
           {/* Default arrow */}
-          <marker id="dfa-arrow-idle" viewBox="0 0 10 10" refX="8" refY="5"
-            markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <marker id="dfa-arrow-idle" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto-start-reverse">
             <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(92,73,58,0.3)" />
           </marker>
           {/* Active arrow */}
-          <marker id="dfa-arrow-active" viewBox="0 0 10 10" refX="8" refY="5"
-            markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <marker id="dfa-arrow-active" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto-start-reverse">
             <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent-primary)" />
           </marker>
           {/* Initial entry arrow */}
-          <marker id="dfa-arrow-entry" viewBox="0 0 10 10" refX="8" refY="5"
-            markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <marker id="dfa-arrow-entry" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto-start-reverse">
             <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(92,73,58,0.45)" />
           </marker>
         </defs>
 
         {/* Entry arrow to START */}
-        <path d="M 18 150 L 37 150" stroke="rgba(92,73,58,0.45)" strokeWidth="2"
+        <path d="M 18 170 L 47 170" stroke="rgba(92,73,58,0.45)" strokeWidth="2.25"
           fill="none" markerEnd="url(#dfa-arrow-entry)" />
-        <text x="10" y="144" fontFamily="var(--font-terminal)" fontSize="8"
-          fill="var(--text-muted)" textAnchor="middle">▶</text>
+        <text x="16" y="160" fontFamily="var(--font-terminal)" fontSize="12"
+          fill="var(--text-muted)" textAnchor="middle">Start</text>
 
         {/* Edges */}
         {DFA_EDGES.map((e, idx) => {
@@ -85,8 +85,8 @@ export default function LexerDfa({ activeState }) {
                 x={e.labelX}
                 y={e.labelY}
                 fontFamily="var(--font-mono)"
-                fontSize="9"
-                fontWeight={active ? '700' : '500'}
+                fontSize="12"
+                fontWeight={active ? '700' : '600'}
                 fill={active ? 'var(--accent-primary)' : 'var(--text-muted)'}
                 textAnchor="middle"
                 opacity={activeState && !related ? 0.35 : 1}
@@ -160,8 +160,8 @@ export default function LexerDfa({ activeState }) {
                 textAnchor="middle"
                 dominantBaseline="middle"
                 fontFamily="var(--font-terminal)"
-                fontSize="9"
-                fontWeight="700"
+                fontSize="13"
+                fontWeight="800"
                 fill={textFill}
                 letterSpacing="0.05em"
                 style={{ pointerEvents: 'none', userSelect: 'none' }}

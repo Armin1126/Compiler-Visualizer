@@ -111,8 +111,11 @@ let result = a * 2 + b;`}</pre>
 
           {/* Cyber Footer */}
           <footer className="landing-footer">
-            <span>// PIPELINE EMULATION STATUS: ACTIVE</span>
-            <span>© 2026 NEXUS CORE ALL RIGHTS RESERVED</span>
+            <span className="footer-left">// PIPELINE EMULATION STATUS: ACTIVE</span>
+            <span className="footer-right">
+              © 2026 Nexus Core — MIT Licensed • <a href="https://github.com/your-repo" target="_blank" rel="noreferrer">GitHub</a>
+              <span className="footer-links"> • <a href="#" onClick={() => setView('console')}>Quickstart</a> • <a href="https://github.com/your-repo/issues" target="_blank" rel="noreferrer">Report Issue</a></span>
+            </span>
           </footer>
         </div>
   );
