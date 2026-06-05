@@ -212,6 +212,8 @@ body::before {
 }
 
 /* Hero Section */
+
+/* Hero Section */
 .hero-section {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
@@ -260,6 +262,7 @@ body::before {
   font-size: 1.1rem;
   line-height: 1.6;
   color: var(--text-muted);
+  font-family: var(--font-sans);
 }
 
 .tinylang-quickstart {
@@ -269,6 +272,16 @@ body::before {
   border-radius: 8px;
   background: rgba(255,255,255,0.6);
 }
+.tinylang-quickstart { }
+.tinylang-quickstart h4 { font-family: var(--font-cyber); }
+.tinylang-quickstart .quick-desc,
+.tinylang-quickstart .quick-list {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+}
+.tinylang-quickstart .quick-list li { margin-bottom: 0.35rem; }
 .tinylang-quickstart h4 {
   margin-bottom: 0.35rem;
   font-family: var(--font-cyber);
@@ -507,6 +520,7 @@ body::before {
   font-size: 0.9rem;
   line-height: 1.5;
   color: var(--text-muted);
+  font-family: var(--font-sans);
 }
 
 /* Landing Page Footer */
@@ -680,6 +694,28 @@ body::before {
   background: rgba(255, 255, 255, 0.45);
   position: relative;
   font-family: var(--font-mono);
+}
+
+/* Theme typography: primary (display) and secondary (body) fonts */
+h1, h2, h3, h4, h5, h6,
+.nav-logo,
+.hero-title,
+.features-title,
+.card-title,
+.step,
+.panel-header,
+.cyber-btn,
+.btn {
+  font-family: var(--font-cyber) !important;
+}
+
+body, p, li, span, a, .card-desc, .quick-desc, .footer-left, .footer-right, .nav-status, .card-tag, .stepper, .step, .console-back-nav {
+  font-family: var(--font-sans) !important;
+}
+
+/* Preserve monospace for code, editor, and terminal */
+code, pre, .editor-textarea, .panel-content, .tinylang-example, .console-mock-body, .console-line {
+  font-family: var(--font-mono) !important;
 }
 
 .editor-textarea {

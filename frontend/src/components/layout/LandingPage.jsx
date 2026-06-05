@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Terminal, Play } from 'lucide-react';
 import { FEATURES, MOCK_DIAGNOSTICS } from '../../utils/constants';
 
-export default function LandingPage({ view, setView, terminalLogs, setTerminalLogs }) {
+export default function LandingPage({ view, setView, terminalLogs, setTerminalLogs, setCode }) {
   const terminalBodyRef = useRef(null);
 
   // Boot terminal animation on landing page
@@ -58,15 +58,26 @@ export default function LandingPage({ view, setView, terminalLogs, setTerminalLo
 
               <div className="tinylang-quickstart">
                 <h4>TinyLang Quickstart</h4>
-                <p className="quick-desc">TinyLang is a minimal language used by this visualizer. Use <strong>let</strong> declarations and simple arithmetic. Statements must end with <strong>;</strong>.</p>
+                <p className="quick-desc">TinyLang is a compact teaching language used by this visualizer. Use <strong>let</strong> to declare variables and simple arithmetic expressions. Every statement must end with <strong>;</strong>. Variable names may contain letters, digits and underscores and cannot start with a digit.</p>
                 <ul className="quick-list">
                   <li><strong>Declaration:</strong> let x = 10;</li>
                   <li><strong>Assignment:</strong> let y = x + 5;</li>
                   <li><strong>Operators:</strong> + - * / %</li>
+                  <li><strong>Notes:</strong> No block scopes; this demo treats variables as global. Comments are not supported.</li>
                 </ul>
                 <pre className="tinylang-example">{`let a = 10;
 let b = 20;
 let result = a * 2 + b;`}</pre>
+                <div style={{ marginTop: '0.6rem' }}>
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      const example = `let a = 10;\nlet b = 20;\nlet result = a * 2 + b;`;
+                      if (typeof setCode === 'function') setCode(example);
+                      setView('console');
+                    }}
+                  >Try this example</button>
+                </div>
               </div>
             </div>
 
@@ -113,7 +124,7 @@ let result = a * 2 + b;`}</pre>
           <footer className="landing-footer">
             <span className="footer-left">// PIPELINE EMULATION STATUS: ACTIVE</span>
             <span className="footer-right">
-              © 2026 Nexus Core — MIT Licensed • <a href="https://github.com/Armin1126" target="_blank" rel="noreferrer">GitHub</a>
+              <a href="https://github.com/Armin1126" target="_blank" rel="noreferrer">GitHub</a>
               <span className="footer-links"> • <a href="#" onClick={(e) => { e.preventDefault(); setView('console'); }}>Quickstart</a> • <a href="https://github.com/Armin1126/issues" target="_blank" rel="noreferrer">Report Issue</a></span>
             </span>
           </footer>

@@ -166,7 +166,8 @@ function App() {
       {view === 'landing' ? (
         <LandingPage 
           view={view} setView={navigate} 
-          terminalLogs={terminalLogs} setTerminalLogs={setTerminalLogs} 
+          terminalLogs={terminalLogs} setTerminalLogs={setTerminalLogs}
+          setCode={setCode}
         />
       ) : (
         <div className="app-container">
