@@ -4,7 +4,7 @@ import LexerDfa from '../visualizers/LexerDfa';
 
 export default function LexerPhase({
   result, code, lexerTab, setLexerTab, lexerTrace, simStep, setSimStep,
-  isPlaying, setIsPlaying, playbackSpeed, setPlaybackSpeed
+  isPlaying, setIsPlaying, playbackSpeed, setPlaybackSpeed, onTokenClick, selectedToken
 }) {
   // Auto-play timer for scanner simulation
   useEffect(() => {
@@ -20,6 +20,41 @@ export default function LexerPhase({
     }, playbackSpeed);
     return () => clearInterval(timer);
   }, [isPlaying, playbackSpeed, lexerTrace.length, setSimStep, setIsPlaying]);
+
+  // Scroll selected emitted token into view when selection changes
+  useEffect(() => {
+    if(!selectedToken) return;
+    const table = document.querySelector('.parser-history-table');
+    if(!table) return;
+    const rows = table.querySelectorAll('tbody tr.history-row');
+    for(const r of rows){
+      if(r.dataset.line == selectedToken.line && r.dataset.col == selectedToken.column && r.dataset.val == selectedToken.value){
+        try{ r.scrollIntoView({ behavior: 'smooth', block: 'center' }); }catch{ void 0; }
+        break;
+      }
+    }
+  }, [selectedToken]);
+
+  // Highlight most recently emitted token row when simStep changes
+  useEffect(() => {
+    if(!lexerTrace || lexerTrace.length === 0) return;
+    const step = lexerTrace[simStep];
+    if(!step) return;
+    const table = document.querySelector('.parser-history-table');
+    if(!table) return;
+    const rows = table.querySelectorAll('tbody tr.history-row');
+    rows.forEach(r => r.classList.remove('recent'));
+    if(step.emitted && step.emitted.length > 0){
+      const last = step.emitted[step.emitted.length - 1];
+      for(const r of rows){
+        if(r.dataset.line == last.line && r.dataset.col == last.column && r.dataset.val == last.value){
+          r.classList.add('recent');
+          setTimeout(()=> r.classList.remove('recent'), 700);
+          break;
+        }
+      }
+    }
+  }, [simStep, lexerTrace]);
 
   return (
     <>
@@ -46,13 +81,15 @@ export default function LexerPhase({
 
       {lexerTab === 'table' ? (
         <table>
-          <thead><tr><th>Type</th><th>Value</th><th>Line:Col</th></tr></thead>
+          <thead><tr><th style={{width:'20%'}}>Type</th><th>Value</th><th style={{width:'20%'}}>Line:Col</th></tr></thead>
           <tbody>
             {result.tokens?.map((t, i) => (
-              <tr key={i}>
-                <td className={t.type === 'KEYWORD' ? 'token-keyword' : t.type === 'IDENTIFIER' ? 'token-identifier' : t.type === 'NUMBER' ? 'token-number' : 'token-default'}>{t.type}</td>
-                <td>{t.value}</td>
-                <td>{t.line}:{t.column}</td>
+              <tr key={i} onClick={() => onTokenClick && onTokenClick(t)} style={{cursor: 'pointer'}}>
+                <td>
+                  <span className={`token-chip chip-${t.type.toLowerCase()}`}>{t.type}</span>
+                </td>
+                <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }}>{t.value}</td>
+                <td style={{ color: 'var(--text-muted)', fontWeight: 700 }}>{t.line}:{t.column}</td>
               </tr>
             ))}
           </tbody>
@@ -154,19 +191,23 @@ export default function LexerPhase({
                       </tr>
                     </thead>
                     <tbody>
-                      {step.emitted.map((tok, idx) => (
-                        <tr key={idx} className="history-row">
-                          <td style={{ textAlign: 'center', fontWeight: 'bold', color: 'var(--text-muted)' }}>
-                            {idx + 1}
-                          </td>
-                          <td className={tok.type === 'KEYWORD' ? 'token-keyword' : tok.type === 'IDENTIFIER' ? 'token-identifier' : tok.type === 'NUMBER' ? 'token-number' : 'token-default'} style={{ fontWeight: '600' }}>
-                            {tok.type}
-                          </td>
-                          <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 'bold' }}>
-                            {tok.value}
-                          </td>
-                        </tr>
-                      ))}
+                      {step.emitted.map((tok, idx) => {
+                        const isSelected = selectedToken && selectedToken.line === tok.line && selectedToken.column === tok.column && selectedToken.value === tok.value;
+                        return (
+                          <tr key={idx} data-line={tok.line} data-col={tok.column} data-val={tok.value} className={"history-row" + (isSelected ? ' selected' : '')} onClick={() => onTokenClick && onTokenClick(tok)} style={{cursor: 'pointer'}}>
+                            <td style={{ textAlign: 'center', fontWeight: 'bold', color: 'var(--text-muted)' }}>
+                              {idx + 1}
+                            </td>
+                            <td>
+                              <span className={`token-chip chip-${tok.type.toLowerCase()}`}>{tok.type}</span>
+                            </td>
+                            <td style={{ fontFamily: 'var(--font-mono)', fontWeight: '700' }}>
+                              {tok.value}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                        
                       {step.emitted.length === 0 && (
                         <tr>
                           <td colSpan="3" style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.75rem', padding: '1rem' }}>
@@ -214,6 +255,8 @@ export default function LexerPhase({
                 </div>
               );
             })()}
+            {/* animate emitted tokens: scroll selected into view */}
+            <div style={{height:8}} />
           </div>
         </div>
       )}

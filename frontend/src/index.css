@@ -611,6 +611,77 @@ body::before {
   text-shadow: none;
 }
 
+/* Compact toolbar to reduce height and maximize workspace */
+.toolbar.compact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  background: var(--panel-bg);
+  border: 2px solid var(--border-color);
+}
+.toolbar-center h2 { font-family: var(--font-cyber); margin: 0; font-size: 1rem; }
+
+/* Pipeline row (staged phases) */
+.pipeline-row { display:flex; gap:0.6rem; align-items:center; padding:0.5rem 0; }
+.pipeline-phase { flex:1 1 auto; padding:0.6rem 0.9rem; border-radius:8px; text-align:center; cursor:pointer; background:transparent; border:1px solid transparent; transition: all 200ms ease; }
+.pipeline-phase .phase-label { font-weight:800; font-family:var(--font-cyber); font-size:0.78rem; }
+.pipeline-phase .phase-sub { font-size:0.69rem; color:var(--text-muted); margin-top:4px; }
+.pipeline-phase.active { border-color: rgba(194,65,12,0.25); box-shadow: 0 6px 20px rgba(212,163,115,0.06); background: var(--accent-primary-light); transform: translateY(-2px); }
+.pipeline-phase.completed { opacity:0.9; border-color: rgba(34,197,94,0.12); background: rgba(34,197,94,0.04); }
+
+/* Resizable splitter between panels */
+.splitter { width:10px; cursor: col-resize; background: linear-gradient(90deg, transparent, rgba(0,0,0,0.02), transparent); border-radius:6px; }
+
+/* Editor shell with gutter & highlight overlay */
+.editor-shell { display:flex; gap:0.5rem; height:100%; min-height:200px; }
+.editor-gutter { width:48px; background: rgba(0,0,0,0.02); padding:8px 6px; border-right:1px solid var(--border-color); overflow:auto; }
+.editor-gutter-line { font-family: var(--font-mono); color: var(--text-muted); font-size:0.82rem; padding:2px 0; text-align:right; }
+.editor-gutter-line.active { color: var(--accent-primary); font-weight:700; }
+.editor-main { position:relative; flex:1; }
+.editor-highlight { position:absolute; inset:0; padding:18px 12px; font-family:var(--font-mono); font-size:0.95rem; line-height:1.6; color:var(--text-main); white-space:pre-wrap; pointer-events:none; }
+.editor-textarea.enhanced { position:relative; width:100%; height:100%; padding:18px 12px; background: rgba(20,20,22,0.03); border-radius:6px; resize:none; color:var(--text-main); border:none; outline:none; font-family:var(--font-mono); font-size:0.95rem; line-height:1.6; }
+.editor-textarea.enhanced::selection { background: rgba(212,163,115,0.2); }
+
+/* token chips used in tables */
+.token-chip { display:inline-flex; gap:0.5rem; padding:0.28rem 0.6rem; border-radius:999px; font-weight:700; font-family:var(--font-mono); font-size:0.75rem; }
+.chip-keyword { background: rgba(245,158,11,0.12); color: #b45309; border:1px solid rgba(180,83,9,0.12); }
+.chip-identifier { background: rgba(6,182,212,0.06); color: #0f766e; border:1px solid rgba(13,148,136,0.08); }
+.chip-number { background: rgba(34,197,94,0.06); color: #166534; border:1px solid rgba(34,197,94,0.12); }
+.chip-operator { background: rgba(124,58,237,0.06); color: #6d28d9; border:1px solid rgba(124,58,237,0.12); }
+.chip-error { background: rgba(239,68,68,0.06); color: #dc2626; border:1px solid rgba(239,68,68,0.12); }
+
+/* subtle transitions for interactive feel */
+.panel, .panel-header, .pipeline-phase, .btn, .cyber-btn { transition: all 220ms cubic-bezier(.16,1,.3,1); }
+
+/* history row appearing animation */
+.history-row { opacity: 0; transform: translateY(6px); animation: token-pop 260ms forwards; }
+.history-row.selected { background: rgba(212,163,115,0.06); border-left: 3px solid rgba(212,163,115,0.28); }
+
+@keyframes token-pop { to { opacity: 1; transform: translateY(0); } }
+
+/* selected table row style for lexer token table */
+table tbody tr.selected td { background: rgba(212,163,115,0.04); }
+
+/* highlight the most-recently emitted token briefly */
+.history-row.recent { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(21,45,78,0.06); transition: transform 220ms ease, box-shadow 220ms ease; }
+
+/* ConsoleEditor styles */
+.editor-shell { display:flex; gap:8px; width:100%; height:100%; }
+.editor-gutter { width:46px; background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent); padding:8px 6px; box-sizing:border-box; overflow:hidden; }
+.gutter-line { height:20px; color:var(--text-muted); font-size:12px; text-align:right; padding-right:8px; }
+.editor-main { position:relative; flex:1; }
+.editor-highlight { position:absolute; inset:0; padding:8px 12px; margin:0; pointer-events:none; white-space:pre-wrap; font-family:var(--font-sans); color:var(--text); }
+.editor-highlight .editor-line { display:flex; gap:8px; align-items:flex-start; }
+.editor-highlight .ln { width:32px; color:var(--text-muted); text-align:right; font-family:var(--font-mono); }
+.editor-highlight .code { white-space:pre-wrap; }
+.editor-highlight .active-line { background: linear-gradient(90deg, rgba(212,163,115,0.03), transparent); }
+.editor-textarea.enhanced { position:relative; width:100%; height:100%; padding:8px 12px; box-sizing:border-box; border:0; resize:none; background:transparent; color:transparent; caret-color:var(--accent-primary); font-family:var(--font-sans); outline:none; }
+.scanner-cursor { display:inline-block; background:rgba(78, 115, 255, 0.18); border-radius:2px; padding:0 2px; box-shadow:0 0 0 1px rgba(78,115,255,0.06) inset; }
+
+
 .stepper {
   display: flex;
   gap: 0.5rem;

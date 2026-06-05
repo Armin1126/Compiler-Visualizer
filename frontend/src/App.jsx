@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Play, Code, Layers, ChevronLeft } from 'lucide-react';
 import { DEFAULT_CODE, PHASES, PHASE_LABELS } from './utils/constants';
@@ -16,6 +16,7 @@ import OptimizerPhase from './components/phases/OptimizerPhase';
 import CodegenPhase from './components/phases/CodegenPhase';
 
 import './App.css';
+import ConsoleEditor from './components/layout/ConsoleEditor';
 
 function App() {
   const [view, setView] = useState('landing');
@@ -48,6 +49,10 @@ function App() {
 
   // Semantics state
   const [selectedSemanticsVar, setSelectedSemanticsVar] = useState(null);
+  const [editorHighlight, setEditorHighlight] = useState(null);
+  const [leftWidth, setLeftWidth] = useState(420);
+  const dragRef = useRef(false);
+  const [selectedToken, setSelectedToken] = useState(null);
 
   const handleCompile = async () => {
     setLoading(true);
@@ -75,6 +80,7 @@ function App() {
       setIsParserPlaying(false);
 
       setActivePhase('LEXER');
+      setEditorHighlight(null);
       setLexerTab('table');
       setParserTab('text');
       setIcgTab('table');
@@ -121,6 +127,23 @@ function App() {
     return () => window.removeEventListener('popstate', onPop);
   }, []);
 
+  useEffect(()=>{
+    const onMove = (e) => {
+      if(!dragRef.current) return;
+      const container = document.querySelector('.main-content');
+      if(!container) return;
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const min = 260; const max = rect.width - 260;
+      const newW = Math.max(min, Math.min(max, x));
+      setLeftWidth(newW);
+    };
+    const onUp = () => { dragRef.current = false; document.body.style.cursor = ''; };
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
+  }, []);
+
   const renderVisualizer = () => {
     if (!result) return <div className="placeholder">Awaiting compilation...</div>;
     
@@ -130,7 +153,12 @@ function App() {
           result={result} code={code} lexerTab={lexerTab} setLexerTab={setLexerTab} 
           lexerTrace={lexerTrace} simStep={simStep} setSimStep={setSimStep} 
           isPlaying={isPlaying} setIsPlaying={setIsPlaying} 
-          playbackSpeed={playbackSpeed} setPlaybackSpeed={setPlaybackSpeed} 
+          playbackSpeed={playbackSpeed} setPlaybackSpeed={setPlaybackSpeed}
+          onTokenClick={(tok)=>{
+            setEditorHighlight({ line: tok.line, column: tok.column });
+            setSelectedToken(tok);
+          }}
+          selectedToken={selectedToken}
         />;
       case 'PARSER':
         return <ParserPhase 
@@ -159,6 +187,8 @@ function App() {
     }
   };
 
+  const scannerIndex = (activePhase === 'LEXER' && lexerTrace && lexerTrace.length > 0 && simStep < lexerTrace.length) ? lexerTrace[simStep].charIndex : null;
+
   return (
     <>
       <div className="scanlines"></div>
@@ -171,56 +201,61 @@ function App() {
         />
       ) : (
         <div className="app-container">
-          <div className="header">
-            <div className="console-back-nav" onClick={() => { setTerminalLogs([]); navigate('landing'); }}>
-              <ChevronLeft size={18} />
-              <span>[ ESCAPE ]</span>
+          <div className="toolbar compact">
+            <div className="toolbar-left">
+              <div className="console-back-nav" onClick={() => { setTerminalLogs([]); navigate('landing'); }}>
+                <ChevronLeft size={16} />
+                <span>[ ESC ]</span>
+              </div>
             </div>
-            <h1>CONSOLE</h1>
-            <button className="btn" onClick={handleCompile} disabled={loading}>
-              <Play size={16} /> {loading ? 'Compiling...' : 'Run Compiler'}
-            </button>
+            <div className="toolbar-center">
+              <h2>Compiler Console</h2>
+            </div>
+            <div className="toolbar-right">
+              <button className="btn" onClick={handleCompile} disabled={loading}>
+                <Play size={14} /> {loading ? 'Compiling...' : 'Run Compiler'}
+              </button>
+            </div>
           </div>
 
-          {result && (
-            <div className="stepper">
-              {PHASES.map(phase => (
-                <div 
-                  key={phase} 
-                  className={`step ${activePhase === phase ? 'active' : ''}`}
-                  onClick={() => {
-                    setActivePhase(phase);
-                    // Reset toggles to default view
-                    setParserTab('text');
-                    setIcgTab('table');
-                    setOptimizerTab('table');
-                  }}
-                >
-                  {phase}
-                </div>
-              ))}
-            </div>
-          )}
+          <div className="pipeline-row">
+            {PHASES.map((phase, idx) => (
+              <div key={phase} className={`pipeline-phase ${activePhase === phase ? 'active' : ''} ${idx < PHASES.indexOf(activePhase) ? 'completed' : ''}`} onClick={() => setActivePhase(phase)}>
+                <div className="phase-label">{phase}</div>
+                <div className="phase-sub">{PHASE_LABELS[phase]}</div>
+              </div>
+            ))}
+          </div>
 
           <div className="main-content">
-            <div className="panel">
+            <div className="panel" style={{ width: leftWidth }}>
               <div className="panel-header">
-                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Code size={18}/> Source Code (TinyLang)</span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Code size={16}/> Source Code</span>
               </div>
               <div className="panel-content">
-                <textarea 
-                  className="editor-textarea"
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  spellCheck="false"
-                />
+                <ConsoleEditor code={code} setCode={setCode} highlight={editorHighlight} scannerIndex={scannerIndex} onCaretChange={(c)=>{
+                  if(!result || !result.tokens) return;
+                  // find token by line/column
+                  const found = result.tokens.find(t => t.line === c.line && t.column === c.column);
+                  if(found){
+                    setSelectedToken(found);
+                  } else {
+                    setSelectedToken(null);
+                  }
+                }} onClickPosition={(p)=>{
+                  if(!result || !result.tokens) return;
+                  const found = result.tokens.find(t => t.line === p.line && t.column === p.column);
+                  if(found){ setSelectedToken(found); setEditorHighlight({ line: found.line, column: found.column }); }
+                }} />
               </div>
             </div>
 
-            <div className="panel" style={{ flex: 2 }}>
+            <div className="splitter" onMouseDown={()=>{ dragRef.current = true; document.body.style.cursor = 'col-resize'; }} />
+
+            <div className="panel" style={{ flex: 1 }}>
               <div className="panel-header">
                 <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <Layers size={18}/> {PHASE_LABELS[activePhase] || activePhase}
+                  <Layers size={16}/> {PHASE_LABELS[activePhase] || activePhase}
                 </span>
               </div>
               <div className="panel-content">
