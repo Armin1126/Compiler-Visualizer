@@ -55,7 +55,7 @@ export default function ConsoleEditor({ code, setCode, highlight, onCaretChange,
           content = `${before}<span class="scanner-cursor">${ch || ' '}</span>${after}`;
         }
       }
-      return `<div class="editor-line ${isActive? 'active-line':''}" data-line="${lnNo}"><span class="ln">${lnNo}</span><span class="ln-sep"> </span><span class="code">${content}</span></div>`;
+      return `<div class="editor-line ${isActive? 'active-line':''}" data-line="${lnNo}"><span class="code">${content}</span></div>`;
     }).join('\n');
     return html;
   };
