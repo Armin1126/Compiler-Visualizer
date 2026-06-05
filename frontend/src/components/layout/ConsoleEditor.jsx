@@ -1,8 +1,43 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function ConsoleEditor({ code, setCode, highlight, onCaretChange, onClickPosition, scannerIndex }){
   const taRef = useRef(null);
+  const preRef = useRef(null);
+  const gutterRef = useRef(null);
+  const shellRef = useRef(null);
+  const [lineHeightPx, setLineHeightPx] = useState(20);
 
+  // initialize editor metrics to avoid offsets
+  useEffect(()=>{
+    const ta = taRef.current;
+    if(!ta) return;
+    // compute line-height from computed style (fallback to 20)
+    const cs = getComputedStyle(ta);
+    const lh = parseFloat(cs.lineHeight) || (parseFloat(cs.fontSize||'14') * 1.6) || 20;
+    setLineHeightPx(lh);
+    // set CSS variables on shell for consistent styling
+    if(shellRef.current){
+      shellRef.current.style.setProperty('--editor-line-height', `${lh}px`);
+      shellRef.current.style.setProperty('--editor-font-size', cs.fontSize || '14px');
+    }
+  }, []);
+
+  // sync overlay/pre and gutter scroll with textarea
+  useEffect(()=>{
+    const ta = taRef.current;
+    const pre = preRef.current;
+    const gutter = gutterRef.current;
+    if(!ta || !pre || !gutter) return;
+    const onScroll = ()=>{
+      pre.scrollTop = ta.scrollTop;
+      pre.scrollLeft = ta.scrollLeft;
+      gutter.scrollTop = ta.scrollTop;
+    };
+    ta.addEventListener('scroll', onScroll);
+    return ()=> ta.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // caret change handler
   useEffect(()=>{
     const ta = taRef.current;
     if(!ta) return;
@@ -17,10 +52,12 @@ export default function ConsoleEditor({ code, setCode, highlight, onCaretChange,
     ta.addEventListener('keyup', handler);
     ta.addEventListener('click', handler);
     ta.addEventListener('input', handler);
+    ta.addEventListener('select', handler);
     return ()=>{
       ta.removeEventListener('keyup', handler);
       ta.removeEventListener('click', handler);
       ta.removeEventListener('input', handler);
+      ta.removeEventListener('select', handler);
     };
   }, [onCaretChange]);
 
@@ -35,17 +72,15 @@ export default function ConsoleEditor({ code, setCode, highlight, onCaretChange,
     onClickPosition && onClickPosition({ line, column, pos });
   };
 
-  // render highlighted code with active-line and scanner cursor
+  // render highlighted HTML; escape and insert scanner marker
   const renderHighlighted = ()=>{
-    if(!code) return '';
+    if(code == null) return '';
     const lines = code.split('\n');
-    const html = lines.map((ln, idx)=>{
+    return lines.map((ln, idx)=>{
       const lnNo = idx+1;
       const isActive = highlight && highlight.line === lnNo;
       let content = ln.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      // if scannerIndex falls on this line, insert a marker span
       if(typeof scannerIndex === 'number'){
-        // compute char index range for this line
         const startOfLine = lines.slice(0, idx).join('\n').length + (idx>0?1:0);
         const rel = scannerIndex - startOfLine;
         if(rel >= 0 && rel <= ln.length){
@@ -55,21 +90,32 @@ export default function ConsoleEditor({ code, setCode, highlight, onCaretChange,
           content = `${before}<span class="scanner-cursor">${ch || ' '}</span>${after}`;
         }
       }
-      return `<div class="editor-line ${isActive? 'active-line':''}" data-line="${lnNo}"><span class="code">${content}</span></div>`;
-    }).join('\n');
-    return html;
+      return `<div class="editor-line${isActive? ' active-line':''}" data-line="${lnNo}" style="height:var(--editor-line-height);">${content||' '}</div>`;
+    }).join('');
+  };
+
+  // generate gutter lines
+  const gutterLines = ()=>{
+    const lines = (code||'').split('\n');
+    return lines.map((_,i)=> (
+      <div key={i} className="gutter-line" style={{height: `var(--editor-line-height)`}}>{i+1}</div>
+    ));
   };
 
   return (
-    <div className="editor-shell">
-      <div className="editor-gutter" aria-hidden>
-        {code.split('\n').map((_,i)=>(
-          <div key={i} className="gutter-line">{i+1}</div>
-        ))}
+    <div ref={shellRef} className="editor-shell" style={{['--editor-line-height']: `${lineHeightPx}px`}}>
+      <div ref={gutterRef} className="editor-gutter" aria-hidden>
+        {gutterLines()}
       </div>
       <div className="editor-main">
-        <pre className="editor-highlight" dangerouslySetInnerHTML={{ __html: renderHighlighted() }} />
-        <textarea ref={taRef} className="editor-textarea enhanced" value={code} onChange={(e)=>{ setCode(e.target.value); }} onClick={handleClick} />
+        <pre ref={preRef} className="editor-highlight" dangerouslySetInnerHTML={{ __html: renderHighlighted() }} />
+        <textarea
+          ref={taRef}
+          className="editor-textarea enhanced"
+          value={code}
+          onChange={(e)=>{ setCode(e.target.value); }}
+          onClick={handleClick}
+        />
       </div>
     </div>
   );
