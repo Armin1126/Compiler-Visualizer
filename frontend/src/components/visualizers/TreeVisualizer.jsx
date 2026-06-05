@@ -132,14 +132,15 @@ function TreeVisualizer({ ast }) {
             <filter id="node-selected-glow" x="-20%" y="-20%" width="140%" height="140%">
               <feDropShadow dx="0" dy="0" stdDeviation="7" floodColor="rgba(180, 83, 9, 0.8)" />
             </filter>
-            <marker id="tree-arrow" viewBox="0 0 10 10" refX="5" refY="5"
-              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(92,73,58,0.4)" />
-            </marker>
-            <marker id="tree-arrow-active" viewBox="0 0 10 10" refX="5" refY="5"
-              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent-primary)" />
-            </marker>
+              <marker id="tree-arrow" viewBox="0 0 10 10" refX="5" refY="5"
+                markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(92,73,58,0.4)" pointerEvents="none" />
+              </marker>
+            
+              <marker id="tree-arrow-active" viewBox="0 0 10 10" refX="5" refY="5"
+                markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent-primary)" pointerEvents="none" />
+              </marker>
           </defs>
 
           {/* Edges */}
@@ -158,6 +159,7 @@ function TreeVisualizer({ ast }) {
                 opacity={isDimmed ? 0.15 : 1}
                 style={{ transition: 'all 0.25s ease' }}
                 markerEnd={isHighlighted ? 'url(#tree-arrow-active)' : 'url(#tree-arrow)'}
+                pointerEvents="none"
               />
             );
           })}

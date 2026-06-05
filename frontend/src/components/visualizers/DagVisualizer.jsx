@@ -149,11 +149,11 @@ function DagVisualizer({ ast, tac }) {
             </filter>
             <marker id="dag-arrow" viewBox="0 0 10 10" refX="5" refY="5"
               markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(92,73,58,0.4)" />
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(92,73,58,0.4)" pointerEvents="none" />
             </marker>
             <marker id="dag-arrow-active" viewBox="0 0 10 10" refX="5" refY="5"
               markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent-primary)" />
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent-primary)" pointerEvents="none" />
             </marker>
           </defs>
 
@@ -172,6 +172,7 @@ function DagVisualizer({ ast, tac }) {
                 opacity={isDimmed ? 0.12 : 1}
                 style={{ transition: 'all 0.25s ease' }}
                 markerEnd={isHighlighted ? 'url(#dag-arrow-active)' : 'url(#dag-arrow)'}
+                pointerEvents="none"
               />
             );
           })}
