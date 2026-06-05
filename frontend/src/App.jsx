@@ -313,7 +313,7 @@ function App() {
           </div>
 
           <div className="main-content">
-            <div className="panel" style={{ width: leftWidth }}>
+            <div className="panel" style={{ width: leftWidth, flex: '0 0 auto' }}>
               <div className="panel-header">
                 <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Code size={16}/> Source Code</span>
               </div>
