@@ -53,6 +53,8 @@ function App() {
   const [leftWidth, setLeftWidth] = useState(420);
   const dragRef = useRef(false);
   const splitterRef = useRef(null);
+  const rafRef = useRef(null);
+  const pendingWidthRef = useRef(null);
   const [selectedToken, setSelectedToken] = useState(null);
 
   const handleCompile = async () => {
@@ -151,7 +153,6 @@ function App() {
     const splitter = splitterRef.current;
     if(!splitter) return;
     const onPointerDown = (e) => {
-      console.log('splitter pointerdown', { pointerId: e.pointerId, x: e.clientX, y: e.clientY });
       try{ splitter.setPointerCapture(e.pointerId); }catch{ void 0; }
       dragRef.current = true;
       document.body.style.cursor = 'col-resize';
@@ -165,7 +166,13 @@ function App() {
         const x = ev.clientX - rect.left;
         const min = 260; const max = rect.width - 260;
         const newW = Math.max(min, Math.min(max, x));
-        setLeftWidth(newW);
+        pendingWidthRef.current = newW;
+        if(!rafRef.current){
+          rafRef.current = requestAnimationFrame(()=>{
+            setLeftWidth(pendingWidthRef.current);
+            rafRef.current = null;
+          });
+        }
       };
 
       const onPointerUp = (ev) => {
@@ -231,8 +238,7 @@ function App() {
 
   // Fallback: overlay-based drag that guarantees pointer capture across the viewport
   const startOverlayDrag = (startEvent) => {
-    // eslint-disable-next-line no-console
-    console.log('startOverlayDrag', { x: startEvent.clientX, y: startEvent.clientY });
+    startEvent.preventDefault();
     startEvent.preventDefault();
     const container = document.querySelector('.main-content');
     if(!container) return;
@@ -249,17 +255,19 @@ function App() {
     document.body.appendChild(overlay);
 
     const onMove = (ev) => {
-      // eslint-disable-next-line no-console
-      console.log('overlay move', { x: ev.clientX, y: ev.clientY });
       const x = ev.clientX - rect.left;
       const min = 260; const max = rect.width - 260;
       const newW = Math.max(min, Math.min(max, x));
-      setLeftWidth(newW);
+      pendingWidthRef.current = newW;
+      if(!rafRef.current){
+        rafRef.current = requestAnimationFrame(()=>{
+          setLeftWidth(pendingWidthRef.current);
+          rafRef.current = null;
+        });
+      }
     };
 
     const onUp = () => {
-      // eslint-disable-next-line no-console
-      console.log('overlay up');
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
       try{ document.body.removeChild(overlay); }catch{ void 0; }
@@ -273,6 +281,11 @@ function App() {
     window.addEventListener('pointerup', onUp);
   };
 
+    // cleanup RAF on unmount
+    useEffect(()=>{
+      return ()=>{ if(rafRef.current) cancelAnimationFrame(rafRef.current); };
+    }, []);
+
   return (
     <>
       <div className="scanlines"></div>
@@ -285,7 +298,6 @@ function App() {
         />
       ) : (
         <div className="app-container">
-          <div className="debug-leftwidth" aria-hidden>{leftWidth}px</div>
           <div className="toolbar compact">
             <div className="toolbar-left">
               <div className="console-back-nav" onClick={() => { setTerminalLogs([]); navigate('landing'); }}>
