@@ -138,7 +138,7 @@ function App() {
       const newW = Math.max(min, Math.min(max, x));
       setLeftWidth(newW);
     };
-    const onUp = () => { dragRef.current = false; document.body.style.cursor = ''; };
+    const onUp = () => { dragRef.current = false; document.body.style.cursor = ''; document.body.style.userSelect = ''; };
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
     return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
@@ -250,7 +250,7 @@ function App() {
               </div>
             </div>
 
-            <div className="splitter" onMouseDown={()=>{ dragRef.current = true; document.body.style.cursor = 'col-resize'; }} />
+            <div className="splitter" onMouseDown={()=>{ dragRef.current = true; document.body.style.cursor = 'col-resize'; document.body.style.userSelect = 'none'; }} />
 
             <div className="panel" style={{ flex: 1 }}>
               <div className="panel-header">
