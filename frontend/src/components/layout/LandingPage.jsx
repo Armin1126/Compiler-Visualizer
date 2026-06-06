@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Terminal, Play } from 'lucide-react';
+import CompilerMiniDashboard from '../../components/visualizers/CompilerMiniDashboard';
 import { FEATURES, MOCK_DIAGNOSTICS } from '../../utils/constants';
 
 export default function LandingPage({ view, setView, terminalLogs, setTerminalLogs, setCode }) {
@@ -81,23 +82,8 @@ let result = a * 2 + b;`}</pre>
               </div>
             </div>
 
-            {/* Interactive Mock Terminal */}
-            <div className="console-mock">
-              <div className="console-mock-header">
-                <div className="console-mock-title">SYSTEM DIAGNOSTICS (TTY1)</div>
-              </div>
-              <div className="console-mock-body" ref={terminalBodyRef}>
-                {terminalLogs.map((log, i) => (
-                  <div key={i} className={`console-line ${log.type}`}>
-                    {log.text}
-                  </div>
-                ))}
-                {/* Blinking cursor line */}
-                <div className="console-line" style={{ display: 'flex', alignItems: 'center' }}>
-                  <span className="terminal-cursor"></span>
-                </div>
-              </div>
-            </div>
+            {/* Interactive Compiler Mini Dashboard */}
+            <CompilerMiniDashboard active="Semantic" />
           </main>
 
           {/* Core Feature Matrix */}

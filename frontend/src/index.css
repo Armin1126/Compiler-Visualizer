@@ -159,6 +159,34 @@ body::before {
   font-family: var(--font-cyber) !important;
 }
 
+/* Mini dashboard styles */
+.mini-dashboard { display:flex; justify-content:center; align-items:center; height:100%; }
+.mini-card { width: 420px; background: rgba(255,255,255,0.04); border-radius:12px; padding:12px; box-shadow: 0 6px 20px rgba(28,20,16,0.12); backdrop-filter: blur(8px) saturate(110%); border: 1px solid rgba(212,163,115,0.06); }
+.mini-card .mini-editor { background: #0f1113; color: #e6e1dc; border-radius:8px; padding:10px; }
+.editor-header { font-size:0.75rem; color:var(--accent-primary); font-weight:700; margin-bottom:6px; }
+.editor-code { font-family: var(--font-mono); font-size:0.8rem; line-height:1.4; background:transparent; margin:0; }
+.pipeline-row { display:flex; align-items:center; gap:8px; padding:12px 6px; justify-content:center; }
+.stage { display:flex; align-items:center; gap:8px; position:relative; }
+.stage-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.06); box-shadow: none; }
+.stage-label { font-size:0.72rem; color:#cfc6bd; }
+.stage-connector { height:1px; width:34px; background:rgba(255,255,255,0.04); position:absolute; left:calc(100% + 4px); top:50%; transform:translateY(-50%); }
+.stage.active .stage-dot { background: var(--accent-primary); box-shadow: 0 6px 18px rgba(212,163,115,0.18); }
+.stage.active .stage-label { color: var(--accent-primary); font-weight:700; }
+.mini-body { display:flex; gap:12px; padding-top:8px; }
+.ast-panel { flex:1; background: rgba(255,255,255,0.02); padding:8px; border-radius:8px; }
+.ast-title { font-size:0.7rem; color:#bfb6ad; margin-bottom:6px; }
+.ast-tree { text-align:center; color:#e6e1dc; }
+.ast-tree .node { font-family: var(--font-cyber); font-weight:700; font-size:1.05rem; color:var(--accent-primary); }
+.ast-tree .children { display:flex; gap:12px; justify-content:center; margin-top:6px; }
+.leaf { background: rgba(255,255,255,0.02); padding:6px 8px; border-radius:6px; font-family: var(--font-mono); }
+.stats-panel { width:136px; display:flex; flex-direction:column; gap:8px; }
+.stat { background: rgba(255,255,255,0.02); padding:6px 8px; border-radius:8px; text-align:center; font-size:0.72rem; color:#e6e1dc; }
+.stat span { display:block; margin-top:6px; font-weight:800; color:var(--accent-primary); }
+
+/* subtle hover */
+.mini-card:hover { transform: translateY(-2px); transition: transform 180ms ease; }
+
+
 .nav-logo:hover {
   text-shadow: 0 0 15px rgba(212, 163, 115, 0.35);
   color: var(--accent-primary-hover);
