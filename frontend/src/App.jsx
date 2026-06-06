@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Play, Code, Layers, ChevronLeft } from 'lucide-react';
 import { DEFAULT_CODE, PHASES, PHASE_LABELS } from './utils/constants';
 import { generateLexerTrace, generateParserTrace, generateShiftReduceTrace } from './utils/traceUtils';
+import { getVariableLifecycle } from './utils/astUtils';
 
 // Layout
 import LandingPage from './components/layout/LandingPage';
@@ -90,6 +91,7 @@ function App() {
 
       setActivePhase('LEXER');
       setEditorHighlight(null);
+      setSelectedSemanticsVar(null);
       setLexerTab('table');
       setParserTab('text');
       setIcgTab('table');
@@ -136,6 +138,23 @@ function App() {
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
   }, []);
+
+  // Coordinate Editor Highlight based on phase and selections
+  useEffect(() => {
+    if (activePhase === 'SEMANTICS' && result) {
+      const symbolsList = Object.values(result.symbolTables || {});
+      const activeVar = selectedSemanticsVar || (symbolsList.length > 0 ? symbolsList[0].name : null);
+      if (activeVar && result.ast) {
+        if (!selectedSemanticsVar) {
+          setSelectedSemanticsVar(activeVar);
+        }
+        const events = getVariableLifecycle(result.ast, activeVar);
+        setEditorHighlight({ varName: activeVar, events });
+      } else {
+        setEditorHighlight(null);
+      }
+    }
+  }, [activePhase, selectedSemanticsVar, result]);
 
   useEffect(()=>{
     // Fallback mouse handlers (kept for older browsers)
