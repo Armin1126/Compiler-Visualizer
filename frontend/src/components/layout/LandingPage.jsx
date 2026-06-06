@@ -125,7 +125,7 @@ let result = a * 2 + b;`}</pre>
             <span className="footer-left">// PIPELINE EMULATION STATUS: ACTIVE</span>
             <span className="footer-right">
               <a href="https://github.com/Armin1126" target="_blank" rel="noreferrer">GitHub</a>
-              <span className="footer-links"> • <a href="#" onClick={(e) => { e.preventDefault(); setView('console'); }}>Quickstart</a> • <a href="https://github.com/Armin1126/issues" target="_blank" rel="noreferrer">Report Issue</a></span>
+              <span className="footer-links"> • <a href="#" onClick={(e) => { e.preventDefault(); setView('console'); }}>Quickstart</a> • <a href="https://github.com/Armin1126/Compiler-Visualizer/issues/new" target="_blank" rel="noopener noreferrer">Report Issue</a></span>
             </span>
           </footer>
         </div>
