@@ -42,6 +42,6 @@ export default function CompilerMiniDashboard({ active = 'Semantic' }) {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
