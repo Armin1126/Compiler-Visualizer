@@ -154,6 +154,11 @@ body::before {
   font-family: var(--font-cyber);
 }
 
+/* Stronger override to ensure the logo uses the cyber font even if other styles load later */
+.landing-nav .nav-logo > span {
+  font-family: var(--font-cyber) !important;
+}
+
 .nav-logo:hover {
   text-shadow: 0 0 15px rgba(212, 163, 115, 0.35);
   color: var(--accent-primary-hover);
