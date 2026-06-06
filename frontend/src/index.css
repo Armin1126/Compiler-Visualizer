@@ -150,6 +150,10 @@ body::before {
   display: inline-block;
 }
 
+.nav-logo span {
+  font-family: var(--font-cyber);
+}
+
 .nav-logo:hover {
   text-shadow: 0 0 15px rgba(212, 163, 115, 0.35);
   color: var(--accent-primary-hover);
