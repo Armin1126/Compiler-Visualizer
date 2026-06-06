@@ -160,7 +160,7 @@ body::before {
 }
 
 /* Mini dashboard styles */
-.mini-dashboard { display:flex; justify-content:center; align-items:center; height:100%; }
+.mini-dashboard { display:flex; justify-content:center; align-items:center; height:100%; animation: float 4s ease-in-out infinite; }
 .mini-card { width: 420px; background: rgba(255,255,255,0.04); border-radius:12px; padding:12px; box-shadow: 0 6px 20px rgba(28,20,16,0.12); backdrop-filter: blur(8px) saturate(110%); border: 1px solid rgba(212,163,115,0.06); }
 .mini-card .mini-editor { background: #0f1113; color: #e6e1dc; border-radius:8px; padding:10px; }
 .editor-header { font-size:0.75rem; color:var(--accent-primary); font-weight:700; margin-bottom:6px; }
@@ -185,6 +185,12 @@ body::before {
 
 /* subtle hover */
 .mini-card:hover { transform: translateY(-2px); transition: transform 180ms ease; }
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
 
 
 .nav-logo:hover {

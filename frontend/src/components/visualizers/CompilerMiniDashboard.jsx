@@ -1,17 +1,11 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 
 const CODE = `int a = 5;\nint b = 7;\nprint(a + b);`;
 const STAGES = ['Lexer', 'Parser', 'AST', 'Semantic', 'TAC', 'Optimize', 'CodeGen'];
 
 export default function CompilerMiniDashboard({ active = 'Semantic' }) {
   return (
-    <motion.div
-      className="mini-dashboard"
-      initial={{ y: 0 }}
-      animate={{ y: [0, -3, 0] }}
-      transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-    >
+    <div className="mini-dashboard">
       <div className="mini-card glass">
         <div className="mini-editor">
           <div className="editor-header">TinyLang</div>
