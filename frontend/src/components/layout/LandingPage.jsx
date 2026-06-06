@@ -36,9 +36,9 @@ export default function LandingPage({ view, setView, terminalLogs, setTerminalLo
           {/* Nav Header */}
           <header className="landing-nav">
               <div className="nav-logo">
-              <Terminal size={22} />
-              <span>compiler visualizer</span>
-            </div>
+                <img src="/favicon.png" alt="compiler visualizer" className="nav-logo-img" />
+                <span>compiler visualizer</span>
+              </div>
             
           </header>
 
