@@ -1,10 +1,30 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Terminal, Play } from 'lucide-react';
 import CompilerMiniDashboard from '../../components/visualizers/CompilerMiniDashboard';
 import { FEATURES, MOCK_DIAGNOSTICS } from '../../utils/constants';
 
+const SAMPLES = [
+  {
+    name: 'Arithmetic',
+    code: `let a = 10;\nlet b = 20;\nlet result = a * 2 + b;\n`
+  },
+  {
+    name: 'Precedence',
+    code: `let x = 5;\nlet y = 10;\nlet z = (x + y) * (y - x) % 7;\n`
+  },
+  {
+    name: 'Chained',
+    code: `let base = 100;\nlet factor = 5;\nlet step = base / factor;\nlet finalVal = step + 20;\n`
+  },
+  {
+    name: 'Circle Area',
+    code: `let pi = 3;\nlet r = 10;\nlet area = pi * r * r;\n`
+  }
+];
+
 export default function LandingPage({ view, setView, terminalLogs, setTerminalLogs, setCode }) {
   const terminalBodyRef = useRef(null);
+  const [sampleIdx, setSampleIdx] = useState(0);
 
   // Boot terminal animation on landing page
   useEffect(() => {
@@ -73,18 +93,39 @@ export default function LandingPage({ view, setView, terminalLogs, setTerminalLo
                 <li><strong>Operators:</strong> + - * / %</li>
                 <li><strong>Notes:</strong> No block scopes; this demo treats variables as global. Comments are not supported.</li>
               </ul>
-              <pre className="tinylang-example">{`let a = 10;
-let b = 20;
-let result = a * 2 + b;`}</pre>
-              <div style={{ marginTop: '0.6rem' }}>
-                <button
-                  className="btn"
-                  onClick={() => {
-                    const example = `let a = 10;\nlet b = 20;\nlet result = a * 2 + b;`;
-                    if (typeof setCode === 'function') setCode(example);
-                    setView('console');
-                  }}
-                >Try this example</button>
+              
+              <div className="example-selector-container" style={{ marginTop: '1rem' }}>
+                <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.6rem', flexWrap: 'wrap' }}>
+                  {SAMPLES.map((s, idx) => (
+                    <button
+                      key={s.name}
+                      className={`btn ${sampleIdx === idx ? '' : 'secondary'}`}
+                      style={{
+                        fontSize: '0.75rem',
+                        padding: '0.4rem 0.8rem',
+                        opacity: sampleIdx === idx ? 1 : 0.65,
+                        background: sampleIdx === idx ? 'var(--accent-primary-light)' : 'transparent',
+                        borderColor: sampleIdx === idx ? 'var(--accent-primary)' : 'var(--border-color)',
+                        color: sampleIdx === idx ? 'var(--accent-primary)' : 'var(--text-muted)'
+                      }}
+                      onClick={() => setSampleIdx(idx)}
+                    >
+                      {s.name}
+                    </button>
+                  ))}
+                </div>
+                <pre className="tinylang-example">{SAMPLES[sampleIdx].code}</pre>
+                <div style={{ marginTop: '0.6rem' }}>
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      if (typeof setCode === 'function') setCode(SAMPLES[sampleIdx].code);
+                      setView('console');
+                    }}
+                  >
+                    Load in Console & Run
+                  </button>
+                </div>
               </div>
             </div>
           </section>

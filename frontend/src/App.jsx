@@ -19,7 +19,13 @@ import './App.css';
 import ConsoleEditor from './components/layout/ConsoleEditor';
 
 function App() {
-  const [view, setView] = useState('landing');
+  const [view, setView] = useState(() => {
+    try {
+      return (window.location.pathname.includes('console') || window.location.hash.includes('console')) ? 'console' : 'landing';
+    } catch {
+      return 'landing';
+    }
+  });
   const [code, setCode] = useState(DEFAULT_CODE);
   const [result, setResult] = useState(null);
   const [activePhase, setActivePhase] = useState('LEXER');
@@ -101,7 +107,7 @@ function App() {
   const navigate = (v) => {
     setView(v);
     try {
-      const url = v === 'landing' ? '/' : '/console';
+      const url = v === 'landing' ? '#/' : '#/console';
       window.history.pushState({ view: v }, '', url);
     } catch {
       void 0;
@@ -111,8 +117,9 @@ function App() {
   // Initialize history state and listen for back/forward
   useEffect(() => {
     try {
-      const initUrl = window.location.pathname.includes('console') || window.location.hash.includes('console') ? '/console' : '/';
-      const initialView = window.location.pathname.includes('console') || window.location.hash.includes('console') ? 'console' : 'landing';
+      const hasConsole = window.location.pathname.includes('console') || window.location.hash.includes('console');
+      const initUrl = hasConsole ? '#/console' : '#/';
+      const initialView = hasConsole ? 'console' : 'landing';
       window.history.replaceState({ view: initialView }, '', initUrl);
     } catch {
       void 0;
@@ -326,8 +333,23 @@ function App() {
 
           <div className="main-content">
             <div className="panel" style={{ width: leftWidth, flex: '0 0 auto' }}>
-              <div className="panel-header">
+              <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Code size={16}/> Source Code</span>
+                <select
+                  className="samples-select"
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      setCode(e.target.value);
+                    }
+                  }}
+                  defaultValue=""
+                >
+                  <option value="" disabled>-- Load Sample --</option>
+                  <option value={`let a = 10;\nlet b = 20;\nlet result = a * 2 + b;\n`}>Arithmetic & Variables</option>
+                  <option value={`let x = 5;\nlet y = 10;\nlet z = (x + y) * (y - x) % 7;\n`}>Operator Precedence</option>
+                  <option value={`let base = 100;\nlet factor = 5;\nlet step = base / factor;\nlet finalVal = step + 20;\n`}>Multi-variable Chains</option>
+                  <option value={`let pi = 3;\nlet r = 10;\nlet area = pi * r * r;\n`}>Circle Area Calculator</option>
+                </select>
               </div>
               <div className="panel-content">
                 <ConsoleEditor code={code} setCode={setCode} highlight={editorHighlight} scannerIndex={scannerIndex} onCaretChange={(c)=>{
