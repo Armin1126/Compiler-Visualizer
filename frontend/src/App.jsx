@@ -250,7 +250,12 @@ function App() {
           setSelectedSemanticsVar={setSelectedSemanticsVar} 
         />;
       case 'ICG':
-        return <IcgPhase result={result} icgTab={icgTab} setIcgTab={setIcgTab} />;
+        return <IcgPhase 
+          result={result} 
+          icgTab={icgTab} 
+          setIcgTab={setIcgTab} 
+          onSelectLine={(line) => setEditorHighlight(line ? { line } : null)}
+        />;
       case 'OPTIMIZER':
         return <OptimizerPhase result={result} optimizerTab={optimizerTab} setOptimizerTab={setOptimizerTab} />;
       case 'CODEGEN':

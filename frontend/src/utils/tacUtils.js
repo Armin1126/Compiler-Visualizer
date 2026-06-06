@@ -70,5 +70,39 @@ const diffOptimizerTraces = (original, optimized) => {
   });
 };
 
+const mapTacToSourceLines = (ast, intermediateCode) => {
+  if (!intermediateCode || intermediateCode.length === 0) return [];
+  
+  const varAssignments = [];
+  const statements = (ast && ast.body) ? ast.body : [];
+  statements.forEach((stmt, idx) => {
+    if (stmt.type === 'DeclareStmt' || stmt.type === 'AssignStmt') {
+      varAssignments.push({
+        varName: stmt.left?.value,
+        line: idx + 1
+      });
+    }
+  });
 
-export { getTacExplanation, diffOptimizerTraces };
+  let lastRealAssignIdx = -1;
+  const mappedInstructions = intermediateCode.map((tac) => {
+    const isTemp = (s) => s && s.startsWith('t') && !isNaN(s.substring(1));
+    const isRealAssign = tac.op === '=' && !isTemp(tac.result);
+    
+    if (isRealAssign) {
+      lastRealAssignIdx++;
+    }
+    
+    const assignInfo = varAssignments[Math.min(lastRealAssignIdx + (isRealAssign ? 0 : 1), varAssignments.length - 1)];
+    const lineNum = assignInfo ? assignInfo.line : 1;
+    
+    return {
+      ...tac,
+      line: lineNum
+    };
+  });
+  
+  return mappedInstructions;
+};
+
+export { getTacExplanation, diffOptimizerTraces, mapTacToSourceLines };

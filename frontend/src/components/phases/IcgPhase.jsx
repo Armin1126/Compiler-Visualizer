@@ -1,7 +1,9 @@
 import DagVisualizer from '../visualizers/DagVisualizer';
-import { getTacExplanation } from '../../utils/tacUtils';
+import { getTacExplanation, mapTacToSourceLines } from '../../utils/tacUtils';
 
-export default function IcgPhase({ result, icgTab, setIcgTab }) {
+export default function IcgPhase({ result, icgTab, setIcgTab, onSelectLine }) {
+  const mappedCode = mapTacToSourceLines(result.ast, result.intermediateCode);
+
   return (
     <>
             <div className="phase-educational-banner">
@@ -37,8 +39,14 @@ export default function IcgPhase({ result, icgTab, setIcgTab }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {result.intermediateCode?.map((tac, i) => (
-                      <tr key={i} className="history-row">
+                    {mappedCode?.map((tac, i) => (
+                      <tr 
+                        key={i} 
+                        className="history-row"
+                        onMouseEnter={() => onSelectLine && onSelectLine(tac.line)}
+                        onMouseLeave={() => onSelectLine && onSelectLine(null)}
+                        style={{ cursor: 'pointer' }}
+                      >
                         <td style={{ textAlign: 'center', fontWeight: 'bold', color: 'var(--text-muted)' }}>
                           ({i + 1})
                         </td>
@@ -60,7 +68,7 @@ export default function IcgPhase({ result, icgTab, setIcgTab }) {
                         </td>
                       </tr>
                     ))}
-                    {(!result.intermediateCode || result.intermediateCode.length === 0) && (
+                    {(!mappedCode || mappedCode.length === 0) && (
                       <tr>
                         <td colSpan="3" style={{ textAlign: 'center', padding: '1.5rem', color: 'var(--text-muted)' }}>
                           No intermediate code generated
