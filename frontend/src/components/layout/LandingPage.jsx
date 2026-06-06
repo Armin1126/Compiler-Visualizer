@@ -58,19 +58,8 @@ export default function LandingPage({ view, setView, terminalLogs, setTerminalLo
               </button>
             </div>
 
-            {/* Interactive Compiler Mini Dashboard + preview column */}
-            <div className="hero-preview">
-              <CompilerMiniDashboard active="Semantic" />
-
-              {/* Floating subtle stats (upper-right of preview column) */}
-              <div className="hero-floating-stats" aria-hidden>
-                <div className="stat-pill"><div className="stat-label">Compile</div><div className="stat-value">2ms</div></div>
-                <div className="stat-pill"><div className="stat-label">Tokens</div><div className="stat-value">12</div></div>
-                <div className="stat-pill"><div className="stat-label">AST Nodes</div><div className="stat-value">7</div></div>
-                <div className="stat-pill"><div className="stat-label">TAC</div><div className="stat-value">4</div></div>
-                <div className="stat-pill"><div className="stat-label">Phase</div><div className="stat-value">Semantic</div></div>
-              </div>
-            </div>
+            {/* Interactive Compiler Mini Dashboard */}
+            <CompilerMiniDashboard active="Semantic" />
           </main>
 
           {/* TinyLang Quickstart moved below hero */}
