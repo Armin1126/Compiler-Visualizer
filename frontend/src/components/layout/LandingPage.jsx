@@ -56,35 +56,47 @@ export default function LandingPage({ view, setView, terminalLogs, setTerminalLo
               <button className="cyber-btn" onClick={() => setView('console')}>
                 LAUNCH TERMINAL CONSOLE <Play size={18} fill="currentColor" />
               </button>
-
-              <div className="tinylang-quickstart">
-                <h4>TinyLang Quickstart</h4>
-                <p className="quick-desc">TinyLang is a compact teaching language used by this visualizer. Use <strong>let</strong> to declare variables and simple arithmetic expressions. Every statement must end with <strong>;</strong>. Variable names may contain letters, digits and underscores and cannot start with a digit.</p>
-                <ul className="quick-list">
-                  <li><strong>Declaration:</strong> let x = 10;</li>
-                  <li><strong>Assignment:</strong> let y = x + 5;</li>
-                  <li><strong>Operators:</strong> + - * / %</li>
-                  <li><strong>Notes:</strong> No block scopes; this demo treats variables as global. Comments are not supported.</li>
-                </ul>
-                <pre className="tinylang-example">{`let a = 10;
-let b = 20;
-let result = a * 2 + b;`}</pre>
-                <div style={{ marginTop: '0.6rem' }}>
-                  <button
-                    className="btn"
-                    onClick={() => {
-                      const example = `let a = 10;\nlet b = 20;\nlet result = a * 2 + b;`;
-                      if (typeof setCode === 'function') setCode(example);
-                      setView('console');
-                    }}
-                  >Try this example</button>
-                </div>
-              </div>
             </div>
 
             {/* Interactive Compiler Mini Dashboard */}
             <CompilerMiniDashboard active="Semantic" />
+
+            {/* Floating subtle stats (upper-right) */}
+            <div className="hero-floating-stats" aria-hidden>
+              <div className="stat-pill"><div className="stat-label">Compile</div><div className="stat-value">2ms</div></div>
+              <div className="stat-pill"><div className="stat-label">Tokens</div><div className="stat-value">12</div></div>
+              <div className="stat-pill"><div className="stat-label">AST Nodes</div><div className="stat-value">7</div></div>
+              <div className="stat-pill"><div className="stat-label">TAC</div><div className="stat-value">4</div></div>
+              <div className="stat-pill"><div className="stat-label">Phase</div><div className="stat-value">Semantic</div></div>
+            </div>
           </main>
+
+          {/* TinyLang Quickstart moved below hero */}
+          <section className="tinylang-quickstart-section">
+            <div className="tinylang-quickstart">
+              <h4>TinyLang Quickstart</h4>
+              <p className="quick-desc">TinyLang is a compact teaching language used by this visualizer. Use <strong>let</strong> to declare variables and simple arithmetic expressions. Every statement must end with <strong>;</strong>. Variable names may contain letters, digits and underscores and cannot start with a digit.</p>
+              <ul className="quick-list">
+                <li><strong>Declaration:</strong> let x = 10;</li>
+                <li><strong>Assignment:</strong> let y = x + 5;</li>
+                <li><strong>Operators:</strong> + - * / %</li>
+                <li><strong>Notes:</strong> No block scopes; this demo treats variables as global. Comments are not supported.</li>
+              </ul>
+              <pre className="tinylang-example">{`let a = 10;
+let b = 20;
+let result = a * 2 + b;`}</pre>
+              <div style={{ marginTop: '0.6rem' }}>
+                <button
+                  className="btn"
+                  onClick={() => {
+                    const example = `let a = 10;\nlet b = 20;\nlet result = a * 2 + b;`;
+                    if (typeof setCode === 'function') setCode(example);
+                    setView('console');
+                  }}
+                >Try this example</button>
+              </div>
+            </div>
+          </section>
 
           {/* Core Feature Matrix */}
           <section className="features-container">
