@@ -2352,4 +2352,40 @@ tbody tr:hover {
 .codegen-table tr.codegen-step-active { background: var(--accent-primary-light); }
 .codegen-table tr.codegen-step-active td { color: var(--text-main); font-weight: 500; }
 
+/* Custom Samples Select Dropdown styling */
+.samples-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.4rem 2rem 0.4rem 0.8rem;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c7165' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  background-size: 0.9rem;
+}
 
+.samples-select:hover {
+  border-color: var(--accent-primary);
+  background-color: var(--accent-primary-light);
+}
+
+.samples-select:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px var(--accent-primary-light);
+}
+
+.samples-select option {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  padding: 0.5rem;
+}

@@ -19,6 +19,29 @@ import CodegenPhase from './components/phases/CodegenPhase';
 import './App.css';
 import ConsoleEditor from './components/layout/ConsoleEditor';
 
+const SAMPLE_1 = `let a = 10;
+let b = 20;
+let result = a * 2 + b;
+`;
+const SAMPLE_2 = `let x = 5;
+let y = 10;
+let z = (x + y) * (y - x) % 7;
+`;
+const SAMPLE_3 = `let base = 100;
+let factor = 5;
+let step = base / factor;
+let finalVal = step + 20;
+`;
+const SAMPLE_4 = `let pi = 3;
+let r = 10;
+let area = pi * r * r;
+`;
+
+const normalizeCode = (str) => {
+  if (!str) return '';
+  return str.replace(/\r\n/g, '\n').trim();
+};
+
 function App() {
   const [view, setView] = useState(() => {
     try {
@@ -62,7 +85,14 @@ function App() {
   const splitterRef = useRef(null);
   const rafRef = useRef(null);
   const pendingWidthRef = useRef(null);
-  const [selectedToken, setSelectedToken] = useState(null);
+  const getSelectedSampleValue = () => {
+    const norm = normalizeCode(code);
+    if (norm === normalizeCode(SAMPLE_1)) return SAMPLE_1;
+    if (norm === normalizeCode(SAMPLE_2)) return SAMPLE_2;
+    if (norm === normalizeCode(SAMPLE_3)) return SAMPLE_3;
+    if (norm === normalizeCode(SAMPLE_4)) return SAMPLE_4;
+    return '';
+  };
 
   const handleCompile = async () => {
     setLoading(true);
@@ -361,18 +391,20 @@ function App() {
                 <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Code size={16}/> Source Code</span>
                 <select
                   className="samples-select"
+                  value={getSelectedSampleValue()}
                   onChange={(e) => {
                     if (e.target.value) {
                       setCode(e.target.value);
                     }
                   }}
-                  defaultValue=""
                 >
-                  <option value="" disabled>-- Load Sample --</option>
-                  <option value={`let a = 10;\nlet b = 20;\nlet result = a * 2 + b;\n`}>Arithmetic & Variables</option>
-                  <option value={`let x = 5;\nlet y = 10;\nlet z = (x + y) * (y - x) % 7;\n`}>Operator Precedence</option>
-                  <option value={`let base = 100;\nlet factor = 5;\nlet step = base / factor;\nlet finalVal = step + 20;\n`}>Multi-variable Chains</option>
-                  <option value={`let pi = 3;\nlet r = 10;\nlet area = pi * r * r;\n`}>Circle Area Calculator</option>
+                  <option value="" disabled>
+                    {getSelectedSampleValue() === '' ? '-- Custom Code --' : '-- Load Sample --'}
+                  </option>
+                  <option value={SAMPLE_1}>Arithmetic & Variables</option>
+                  <option value={SAMPLE_2}>Operator Precedence</option>
+                  <option value={SAMPLE_3}>Multi-variable Chains</option>
+                  <option value={SAMPLE_4}>Circle Area Calculator</option>
                 </select>
               </div>
               <div className="panel-content">
