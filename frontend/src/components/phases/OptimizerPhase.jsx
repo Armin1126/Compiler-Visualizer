@@ -237,13 +237,19 @@ export default function OptimizerPhase({ result, optimizerTab, setOptimizerTab }
               className="opt-progress-fill"
               style={{ width: `${totalSteps > 0 ? ((simStep + 1) / totalSteps) * 100 : 0}%` }}
             />
-            {changedDiffs.map((_, i) => (
+            <div
+              className={`opt-progress-dot ${simStep >= -1 ? 'done' : ''} ${simStep === -1 ? 'active' : ''}`}
+              style={{ left: '0%' }}
+              onClick={() => { setIsPlaying(false); setSimStep(-1); }}
+              title="Original Code"
+            />
+            {changedDiffs.map((diff, i) => (
               <div
                 key={i}
                 className={`opt-progress-dot ${i <= simStep ? 'done' : ''} ${i === simStep ? 'active' : ''}`}
-                style={{ left: `${((i + 0.5) / totalSteps) * 100}%` }}
+                style={{ left: `${((i + 1) / totalSteps) * 100}%` }}
                 onClick={() => { setIsPlaying(false); setSimStep(i); }}
-                title={`Optimization ${i + 1}`}
+                title={`Optimization ${i + 1}: ${diff.type}`}
               />
             ))}
           </div>

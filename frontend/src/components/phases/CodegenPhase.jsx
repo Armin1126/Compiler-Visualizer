@@ -151,13 +151,19 @@ export default function CodegenPhase({ result }) {
         {/* Progress Bar */}
         <div className="codegen-progress-track">
           <div className="codegen-progress-fill" style={{ width: `${totalSteps > 0 ? ((simStep + 1) / totalSteps) * 100 : 0}%` }} />
-          {Array.from({ length: totalSteps }).map((_, i) => (
+          <div
+            className={`codegen-progress-dot ${simStep >= -1 ? 'done' : ''} ${simStep === -1 ? 'active' : ''}`}
+            style={{ left: '0%' }}
+            onClick={() => { setIsPlaying(false); setSimStep(-1); }}
+            title="Ready to Start"
+          />
+          {assembly.map((asm, i) => (
             <div
               key={i}
               className={`codegen-progress-dot ${i <= simStep ? 'done' : ''} ${i === simStep ? 'active' : ''}`}
-              style={{ left: `${((i + 0.5) / totalSteps) * 100}%` }}
+              style={{ left: `${((i + 1) / totalSteps) * 100}%` }}
               onClick={() => { setIsPlaying(false); setSimStep(i); }}
-              title={`Instruction ${i + 1}`}
+              title={`Instruction ${i + 1}: ${asm.opcode} ${asm.arg1 || ''}`}
             />
           ))}
         </div>
