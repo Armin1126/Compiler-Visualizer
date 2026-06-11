@@ -2227,3 +2227,111 @@ tbody tr:hover {
   100% { background-position: 0 800px; }
 }
 
+/* ────────────────────────────────────────────
+   Optimizer Visualizer Styles
+   ──────────────────────────────────────────── */
+.opt-waterfall { margin-top: 1.5rem; }
+.opt-waterfall-label { font-weight: 600; color: var(--text-main); margin-bottom: 0.25rem; font-size: 0.85rem; }
+.opt-waterfall-track { display: flex; height: 1.2rem; background: var(--border-color); border-radius: 6px; overflow: hidden; }
+.opt-waterfall-bar { display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--text-main); }
+.opt-waterfall-original { background: var(--accent-primary-light); }
+.opt-waterfall-optimized { background: var(--accent-primary); color: var(--text-inverse); }
+.opt-waterfall-savings { margin-top: 0.3rem; font-size: 0.75rem; color: var(--accent-primary); }
+
+/* Optimizer playback controls */
+.opt-sim-container { margin-top: 1.5rem; }
+.opt-sim-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.opt-sim-controls-left button { margin-right: 0.4rem; }
+.opt-sim-controls-left .sim-btn { background: var(--panel-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 4px 6px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+.opt-sim-controls-left .sim-btn:hover { background: var(--accent-primary-light); border-color: var(--accent-primary); }
+.opt-sim-controls-left .primary { background: var(--accent-primary); color: var(--text-inverse); border-color: var(--accent-primary); }
+.opt-sim-controls-center .opt-step-counter { font-weight: 500; color: var(--text-main); }
+.opt-sim-controls-right .speed-label { font-size: 0.75rem; margin-right: 0.3rem; color: var(--text-muted); }
+.speed-slider { width: 120px; }
+
+/* Progress track */
+.opt-progress-track { position: relative; height: 6px; background: var(--border-color); border-radius: 3px; margin: 0.6rem 0; }
+.opt-progress-fill { position: absolute; height: 100%; background: var(--accent-primary); border-radius: 3px; }
+.opt-progress-dot { position: absolute; top: -4px; width: 10px; height: 10px; background: var(--accent-primary-light); border: 1px solid var(--accent-primary); border-radius: 50%; cursor: pointer; transition: background 0.2s; }
+.opt-progress-dot.done { background: var(--accent-primary); }
+.opt-progress-dot.active { box-shadow: 0 0 0 2px var(--accent-primary-light); }
+
+/* Current optimization banner */
+.opt-current-banner { display: flex; align-items: center; gap: 0.8rem; background: var(--panel-bg); border-left: 4px solid var(--accent-primary); padding: 0.75rem 1rem; margin-bottom: 1rem; border-radius: 4px; }
+.opt-current-banner-idle { border-left-color: var(--border-color); }
+.opt-current-icon { font-size: 1.2rem; }
+.opt-current-info { flex-grow: 1; }
+.opt-current-type { font-weight: 600; font-size: 0.9rem; }
+.opt-current-explanation { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem; }
+.opt-current-transform { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.85rem; }
+.opt-before { text-decoration: line-through; opacity: 0.6; }
+.opt-after { font-weight: 600; }
+
+/* Optimizer table */
+.opt-sim-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.opt-sim-table th, .opt-sim-table td { border: 1px solid var(--border-color); padding: 0.4rem 0.6rem; }
+.opt-sim-row.opt-step-active { background: var(--accent-primary-light); }
+.opt-sim-row.opt-step-applied { background: rgba(13,148,136,0.04); }
+.opt-sim-row.opt-step-unchanged { background: transparent; }
+.opt-status-badge { padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; font-weight: 500; }
+.opt-status-optimized { background: var(--accent-primary-light); color: var(--accent-primary); }
+.opt-status-pending { background: rgba(194,65,12,0.08); color: var(--accent-primary); }
+.opt-status-kept { background: rgba(0,0,0,0.05); color: var(--text-muted); }
+.opt-rule-badge { display: inline-flex; align-items: center; gap: 2px; padding: 2px 6px; border: 1px solid; border-radius: 4px; font-size: 0.68rem; }
+
+/* Rules panel */
+.opt-rules-panel { margin-top: 1.5rem; border-top: 1px solid var(--border-color); }
+.opt-rules-header { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; cursor: pointer; font-weight: 600; color: var(--text-main); }
+.opt-rules-body { padding: 0.5rem 0; }
+.opt-rule-card { border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 0.75rem; overflow: hidden; }
+.opt-rule-card-header { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; border-left: 6px solid; background: var(--panel-bg); }
+.opt-rule-icon { font-size: 1rem; }
+.opt-rule-name { flex-grow: 1; }
+.opt-rule-count { font-weight: 600; }
+.opt-rule-examples { padding: 0.4rem 0.6rem; font-size: 0.75rem; }
+.opt-rule-example { display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.2rem; }
+
+/* ────────────────────────────────────────────
+   Codegen Visualizer Styles
+   ──────────────────────────────────────────── */
+.codegen-sim-container { margin-top: 1.25rem; }
+.codegen-sim-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.codegen-sim-controls-left button { margin-right: 0.4rem; }
+.codegen-sim-controls-left .sim-btn { background: var(--panel-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 4px 6px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+.codegen-sim-controls-left .sim-btn:hover { background: var(--accent-primary-light); border-color: var(--accent-primary); }
+.codegen-sim-controls-left .primary { background: var(--accent-primary); color: var(--text-inverse); border-color: var(--accent-primary); }
+.codegen-sim-controls-center .codegen-step-counter { font-weight: 500; color: var(--text-main); }
+.codegen-sim-controls-right .speed-label { font-size: 0.75rem; margin-right: 0.3rem; color: var(--text-muted); }
+
+/* Progress track */
+.codegen-progress-track { position: relative; height: 6px; background: var(--border-color); border-radius: 3px; margin: 0.6rem 0; }
+.codegen-progress-fill { position: absolute; height: 100%; background: var(--accent-primary); border-radius: 3px; }
+.codegen-progress-dot { position: absolute; top: -4px; width: 10px; height: 10px; background: var(--accent-primary-light); border: 1px solid var(--accent-primary); border-radius: 50%; cursor: pointer; transition: background 0.2s; }
+.codegen-progress-dot.done { background: var(--accent-primary); }
+.codegen-progress-dot.active { box-shadow: 0 0 0 2px var(--accent-primary-light); }
+
+/* Registers Grid */
+.codegen-reg-panel { margin-top: 1.25rem; padding: 0.75rem; background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 6px; }
+.codegen-reg-panel h4 { margin: 0 0 0.5rem 0; font-size: 0.85rem; color: var(--text-main); }
+.codegen-reg-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+.codegen-reg-cell { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.4rem; background: rgba(0, 0, 0, 0.1); border: 1px solid var(--border-color); border-radius: 4px; }
+.codegen-reg-name { font-size: 0.7rem; font-weight: bold; color: var(--accent-primary); }
+.codegen-reg-val { font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-main); margin-top: 0.15rem; }
+
+/* Memory Map Panel */
+.codegen-mem-panel { margin-top: 1rem; padding: 0.75rem; background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 6px; }
+.codegen-mem-panel h4 { margin: 0 0 0.5rem 0; font-size: 0.85rem; color: var(--text-main); }
+.codegen-mem-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 0.4rem; max-height: 120px; overflow-y: auto; }
+.codegen-mem-cell { display: flex; flex-direction: column; align-items: center; padding: 0.3rem; background: rgba(0,0,0,0.15); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.7rem; }
+.codegen-mem-addr { font-family: var(--font-mono); color: var(--text-muted); font-size: 0.65rem; }
+.codegen-mem-val { font-family: var(--font-mono); color: var(--text-main); font-weight: 600; margin-top: 0.1rem; }
+
+/* Table styling */
+.codegen-table-container { margin-top: 1.25rem; overflow-x: auto; border: 1px solid var(--border-color); border-radius: 6px; }
+.codegen-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; text-align: left; }
+.codegen-table th, .codegen-table td { border-bottom: 1px solid var(--border-color); padding: 0.45rem 0.6rem; }
+.codegen-table th { background: var(--panel-bg); font-weight: 600; }
+.codegen-table tr.codegen-step-active { background: var(--accent-primary-light); }
+.codegen-table tr.codegen-step-active td { color: var(--text-main); font-weight: 500; }
+
+

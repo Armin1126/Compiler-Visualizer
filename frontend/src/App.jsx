@@ -36,7 +36,7 @@ function App() {
   // Graphical sub-view tabs
   const [parserTab, setParserTab] = useState('text');
   const [icgTab, setIcgTab] = useState('table');
-  const [optimizerTab, setOptimizerTab] = useState('table');
+  const [optimizerTab, setOptimizerTab] = useState('walkthrough');
 
   // Lexer simulator state
   const [lexerTab, setLexerTab] = useState('table');
@@ -95,7 +95,7 @@ function App() {
       setLexerTab('table');
       setParserTab('text');
       setIcgTab('table');
-      setOptimizerTab('table');
+      setOptimizerTab('walkthrough');
     } catch (err) {
       console.error(err);
       const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
