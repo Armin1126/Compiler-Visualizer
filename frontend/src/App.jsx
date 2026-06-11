@@ -85,6 +85,7 @@ function App() {
   const splitterRef = useRef(null);
   const rafRef = useRef(null);
   const pendingWidthRef = useRef(null);
+  const [selectedToken, setSelectedToken] = useState(null);
   const getSelectedSampleValue = () => {
     const norm = normalizeCode(code);
     if (norm === normalizeCode(SAMPLE_1)) return SAMPLE_1;
