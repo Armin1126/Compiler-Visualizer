@@ -78,26 +78,8 @@ export default function ConsoleEditor({ code, setCode, highlight, onCaretChange,
     const lines = code.split('\n');
     return lines.map((ln, idx)=>{
       const lnNo = idx+1;
-      let isActive = highlight && highlight.line === lnNo;
-      let lineClassSuffix = isActive ? ' active-line' : '';
-      
       let content = ln.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
       
-      if (highlight && highlight.varName) {
-        const escapedVarName = highlight.varName.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-        const regex = new RegExp(`\\b${escapedVarName}\\b`, 'g');
-        const eventOnLine = highlight.events && highlight.events.find(e => e.line === lnNo);
-        
-        let tokenClassSuffix = '';
-        if (eventOnLine) {
-          lineClassSuffix = ` active-line-${eventOnLine.type.toLowerCase()}`;
-          tokenClassSuffix = ` highlight-var-token-${eventOnLine.type.toLowerCase()}`;
-        } else {
-          tokenClassSuffix = '';
-        }
-        content = content.replace(regex, `<span class="highlight-var-token${tokenClassSuffix}">${highlight.varName}</span>`);
-      }
-
       if(typeof scannerIndex === 'number'){
         const startOfLine = lines.slice(0, idx).join('\n').length + (idx>0?1:0);
         const rel = scannerIndex - startOfLine;
@@ -108,7 +90,7 @@ export default function ConsoleEditor({ code, setCode, highlight, onCaretChange,
           content = `${before}<span class="scanner-cursor">${ch || ' '}</span>${after}`;
         }
       }
-      return `<div class="editor-line${lineClassSuffix}" data-line="${lnNo}" style="height:var(--editor-line-height);">${content||' '}</div>`;
+      return `<div class="editor-line" data-line="${lnNo}" style="height:var(--editor-line-height);">${content||' '}</div>`;
     }).join('');
   };
 
