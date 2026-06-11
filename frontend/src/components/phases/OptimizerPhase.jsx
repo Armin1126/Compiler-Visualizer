@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Play, Pause, SkipForward, SkipBack, RotateCcw, Zap, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, RotateCcw, Zap, ArrowRight, ChevronDown, ChevronUp, Trash2, Plus, Sparkles, Clipboard, Calculator } from 'lucide-react';
 import DagVisualizer from '../visualizers/DagVisualizer';
 import { diffOptimizerTraces } from '../../utils/tacUtils';
 
@@ -16,12 +16,12 @@ const formatTac = (t) => {
    Helper: get optimization icon & color
    ──────────────────────────────────────────── */
 const OPT_META = {
-  'Constant Folding':          { icon: '⚡', color: '#0d9488', bg: 'rgba(13,148,136,0.08)', label: 'CF' },
-  'Algebraic Simplification':  { icon: '🔢', color: '#3b82f6', bg: 'rgba(59,130,246,0.08)', label: 'AS' },
-  'Additive identity rule':    { icon: '➕', color: '#8b5cf6', bg: 'rgba(139,92,246,0.08)', label: 'AI' },
-  'Removed':                   { icon: '🗑', color: '#ef4444', bg: 'rgba(239,68,68,0.08)', label: 'RM' },
-  'Optimization':              { icon: '✨', color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', label: 'OP' },
-  'None':                      { icon: '—',  color: 'var(--text-muted)', bg: 'transparent', label: '—' },
+  'Constant Folding':          { icon: Zap, color: '#0d9488', bg: 'rgba(13,148,136,0.08)', label: 'CF' },
+  'Algebraic Simplification':  { icon: Calculator, color: '#3b82f6', bg: 'rgba(59,130,246,0.08)', label: 'AS' },
+  'Additive identity rule':    { icon: Plus, color: '#8b5cf6', bg: 'rgba(139,92,246,0.08)', label: 'AI' },
+  'Removed':                   { icon: Trash2, color: '#ef4444', bg: 'rgba(239,68,68,0.08)', label: 'RM' },
+  'Optimization':              { icon: Sparkles, color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', label: 'OP' },
+  'None':                      { icon: null,  color: 'var(--text-muted)', bg: 'transparent', label: '—' },
 };
 
 const getMeta = (type) => OPT_META[type] || OPT_META['None'];
@@ -251,8 +251,11 @@ export default function OptimizerPhase({ result, optimizerTab, setOptimizerTab }
           {/* Current Optimization Explanation Banner */}
           {currentOpt && (
             <div className="opt-current-banner" key={simStep}>
-              <div className="opt-current-icon" style={{ color: getMeta(currentOpt.type).color }}>
-                {getMeta(currentOpt.type).icon}
+              <div className="opt-current-icon" style={{ color: getMeta(currentOpt.type).color, display: 'flex', alignItems: 'center' }}>
+                {(() => {
+                  const Icon = getMeta(currentOpt.type).icon;
+                  return Icon ? <Icon size={18} /> : null;
+                })()}
               </div>
               <div className="opt-current-info">
                 <div className="opt-current-type" style={{ color: getMeta(currentOpt.type).color }}>
@@ -269,7 +272,9 @@ export default function OptimizerPhase({ result, optimizerTab, setOptimizerTab }
           )}
           {simStep === -1 && (
             <div className="opt-current-banner opt-current-banner-idle">
-              <div className="opt-current-icon">📋</div>
+              <div className="opt-current-icon" style={{ color: 'var(--accent-primary)', display: 'flex', alignItems: 'center' }}>
+                <Clipboard size={18} />
+              </div>
               <div className="opt-current-info">
                 <div className="opt-current-type">Original Three-Address Code</div>
                 <div className="opt-current-explanation">
@@ -338,7 +343,11 @@ export default function OptimizerPhase({ result, optimizerTab, setOptimizerTab }
                       <td>
                         {isApplied && diff.changed ? (
                           <span className="opt-rule-badge" style={{ background: meta.bg, color: meta.color, borderColor: meta.color }}>
-                            {meta.icon} {diff.type}
+                            {(() => {
+                              const Icon = meta.icon;
+                              return Icon ? <Icon size={11} style={{ marginRight: 3 }} /> : null;
+                            })()}
+                            {diff.type}
                           </span>
                         ) : diff.changed ? (
                           <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontStyle: 'italic' }}>
@@ -376,7 +385,12 @@ export default function OptimizerPhase({ result, optimizerTab, setOptimizerTab }
                     return (
                       <div key={type} className="opt-rule-card">
                         <div className="opt-rule-card-header" style={{ borderLeftColor: meta.color }}>
-                          <span className="opt-rule-icon">{meta.icon}</span>
+                          <span className="opt-rule-icon" style={{ display: 'flex', alignItems: 'center' }}>
+                            {(() => {
+                              const Icon = meta.icon;
+                              return Icon ? <Icon size={14} /> : null;
+                            })()}
+                          </span>
                           <span className="opt-rule-name">{type}</span>
                           <span className="opt-rule-count" style={{ color: meta.color }}>{info.count}×</span>
                         </div>
