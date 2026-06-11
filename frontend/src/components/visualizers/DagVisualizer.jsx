@@ -5,7 +5,7 @@ const ZOOM_STEP = 0.15;
 const MIN_ZOOM = 0.2;
 const MAX_ZOOM = 2.0;
 
-function DagVisualizer({ ast, tac }) {
+function DagVisualizer({ ast, tac, optimizedTac }) {
   const [hoveredId, setHoveredId] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const [zoom, setZoom] = useState(0.75);
@@ -22,7 +22,7 @@ function DagVisualizer({ ast, tac }) {
     }
   }, []);
 
-  const rawNodes = useMemo(() => ast ? buildDagGraph(ast) : buildDagFromTac(tac), [ast, tac]);
+  const rawNodes = useMemo(() => ast ? buildDagGraph(ast) : buildDagFromTac(tac, optimizedTac), [ast, tac, optimizedTac]);
 
   const { nodes, edges, coords, svgWidth, svgHeight } = useMemo(() => {
     if (!rawNodes || rawNodes.length === 0) return { nodes: [], edges: [], coords: {}, svgWidth: 600, svgHeight: 300 };
@@ -195,6 +195,12 @@ function DagVisualizer({ ast, tac }) {
 
             if (isRoot) { fill = '#fef7ed'; stroke = 'var(--accent-primary)'; strokeWidth = 2.5; }
             if (isLeaf && !isRoot) { fill = '#f9f7f5'; }
+            if (node.isFolded) {
+              fill = 'rgba(13, 148, 136, 0.06)';
+              stroke = '#0d9488';
+              strokeWidth = 2;
+              textFill = '#0f766e';
+            }
 
             if (isSelected) {
               fill = 'rgba(212,163,115,0.18)';

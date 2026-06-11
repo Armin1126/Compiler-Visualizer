@@ -505,7 +505,7 @@ export default function OptimizerPhase({ result, optimizerTab, setOptimizerTab }
       {/* ═══════════════════════════════════
           TAB 3: DAG VISUALIZER
           ═══════════════════════════════════ */}
-      {optimizerTab === 'dag' && result.optimizedCode && <DagVisualizer tac={result.optimizedCode} />}
+      {optimizerTab === 'dag' && result.optimizedCode && <DagVisualizer tac={result.intermediateCode} optimizedTac={result.optimizedCode} />}
     </>
   );
 }

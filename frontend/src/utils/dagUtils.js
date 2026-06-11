@@ -83,7 +83,7 @@ const buildDagGraph = (ast) => {
 };
 
 
-const buildDagFromTac = (tacList) => {
+const buildDagFromTac = (tacList, optimizedTac = null) => {
   if (!tacList || tacList.length === 0) return [];
   
   const nodesMap = new Map();
@@ -156,16 +156,44 @@ const buildDagFromTac = (tacList) => {
     }
   });
   
-  // Format labels to include their variable bindings
+  // Build a map of optimized values if optimizedTac is provided
+  const optMap = {};
+  if (optimizedTac) {
+    optimizedTac.forEach(inst => {
+      if (inst.op === '=') {
+        optMap[inst.result] = inst.arg1;
+      }
+    });
+  }
+  
+  // Format labels to include their variable bindings and optimization overlays
   nodesMap.forEach((node) => {
     if (node.vars && node.vars.length > 0) {
       const userVars = node.vars.filter(v => !/^t\d+$/.test(v));
       const varsToDisplay = userVars.length > 0 ? userVars : node.vars;
       
-      // Only prefix if variable name is different from the leaf label itself
-      const uniqueVars = varsToDisplay.filter(v => v !== node.label);
-      if (uniqueVars.length > 0) {
-        node.label = `${uniqueVars.join(', ')} = ${node.label}`;
+      let optValue = null;
+      for (const v of node.vars) {
+        if (optMap[v] !== undefined) {
+          optValue = optMap[v];
+          break;
+        }
+      }
+      
+      // If optimized value is found and is different from the current label, mark it
+      if (optValue !== null && String(optValue) !== String(node.label)) {
+        node.isFolded = true;
+        const uniqueVars = varsToDisplay.filter(v => v !== node.label);
+        if (uniqueVars.length > 0) {
+          node.label = `${uniqueVars.join(', ')} = ${node.label} ➜ ${optValue}`;
+        } else {
+          node.label = `${node.label} ➜ ${optValue}`;
+        }
+      } else {
+        const uniqueVars = varsToDisplay.filter(v => v !== node.label);
+        if (uniqueVars.length > 0) {
+          node.label = `${uniqueVars.join(', ')} = ${node.label}`;
+        }
       }
     }
   });
