@@ -9,10 +9,10 @@ export default function SemanticsPhase({ result, selectedSemanticsVar, setSelect
         symbolsList.forEach((sym) => {
           const events = getVariableLifecycle(result.ast, sym.name);
           const hasReads = events.some(e => e.type === 'Read');
-          if (sym.isDeclared && !hasReads) {
+          if (sym.declared && !hasReads) {
             warningLogs.push(`Variable '${sym.name}' is declared but never read (unused variable).`);
           }
-          if (sym.isDeclared && !sym.isInitialized) {
+          if (sym.declared && !sym.initialized) {
             warningLogs.push(`Variable '${sym.name}' is declared but never initialized.`);
           }
         });
@@ -48,10 +48,10 @@ export default function SemanticsPhase({ result, selectedSemanticsVar, setSelect
                           let statusText = 'Declared';
                           let badgeClass = 'badge-yellow';
                           
-                          if (sym.isDeclared && sym.isInitialized) {
+                          if (sym.declared && sym.initialized) {
                             statusText = 'Initialized';
                             badgeClass = 'badge-green';
-                          } else if (!sym.isDeclared) {
+                          } else if (!sym.declared) {
                             statusText = 'Undeclared';
                             badgeClass = 'badge-red';
                           }
