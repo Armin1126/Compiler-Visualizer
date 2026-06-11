@@ -43,18 +43,56 @@ const diffOptimizerTraces = (original, optimized) => {
       const isOperator = ['+', '-', '*', '/', '%'].includes(orig.op);
       const isNumber = (s) => s && !isNaN(s);
       
+      // Case 1: Pure constant folding (both args were already numbers)
       if (isOperator && isNumber(orig.arg1) && isNumber(orig.arg2)) {
         type = 'Constant Folding';
         explanation = `Evaluated constant expression: ${orig.arg1} ${orig.op} ${orig.arg2} → ${opt.arg1}`;
-      } else if (orig.op === '*' && (orig.arg1 === '1' || orig.arg2 === '1')) {
+      }
+      // Case 2: Constant Propagation + Folding (original args were variables, but optimizer
+      //         propagated known constant values and then folded the result)
+      else if (isOperator && opt.op === '=' && isNumber(opt.arg1)) {
+        type = 'Constant Folding';
+        explanation = `Propagated constants and folded: ${orig.arg1} ${orig.op} ${orig.arg2} → ${opt.arg1}`;
+      }
+      // Case 3: Simple assignment where optimizer propagated a constant value
+      else if (orig.op === '=' && opt.op === '=' && orig.arg1 !== opt.arg1) {
+        type = 'Constant Folding';
+        explanation = `Propagated constant value: ${orig.arg1} → ${opt.arg1}`;
+      }
+      // Case 4: Multiplicative identity x * 1 or 1 * x
+      else if (orig.op === '*' && (orig.arg1 === '1' || orig.arg2 === '1')) {
         const otherVal = orig.arg1 === '1' ? orig.arg2 : orig.arg1;
         type = 'Algebraic Simplification';
         explanation = `Multiplicative identity rule: ${otherVal} * 1 → ${otherVal}`;
-      } else if (orig.op === '+' && (orig.arg1 === '0' || orig.arg2 === '0')) {
+      }
+      // Case 5: Additive identity x + 0 or 0 + x
+      else if (orig.op === '+' && (orig.arg1 === '0' || orig.arg2 === '0')) {
         const otherVal = orig.arg1 === '0' ? orig.arg2 : orig.arg1;
         type = 'Additive identity rule';
         explanation = `Additive identity rule: ${otherVal} + 0 → ${otherVal}`;
-      } else {
+      }
+      // Case 6: Subtractive identity x - 0
+      else if (orig.op === '-' && orig.arg2 === '0') {
+        type = 'Algebraic Simplification';
+        explanation = `Subtractive identity rule: ${orig.arg1} - 0 → ${orig.arg1}`;
+      }
+      // Case 7: Multiplication by zero x * 0 or 0 * x
+      else if (orig.op === '*' && (orig.arg1 === '0' || orig.arg2 === '0')) {
+        type = 'Algebraic Simplification';
+        explanation = `Zero multiplication: anything * 0 → 0`;
+      }
+      // Case 8: Division by one x / 1
+      else if (orig.op === '/' && orig.arg2 === '1') {
+        type = 'Algebraic Simplification';
+        explanation = `Division identity rule: ${orig.arg1} / 1 → ${orig.arg1}`;
+      }
+      // Case 9: Self subtraction x - x
+      else if (orig.op === '-' && orig.arg1 === orig.arg2) {
+        type = 'Algebraic Simplification';
+        explanation = `Self-cancellation: ${orig.arg1} - ${orig.arg1} → 0`;
+      }
+      // Fallback
+      else {
         type = 'Optimization';
         explanation = `Simplified operation`;
       }
