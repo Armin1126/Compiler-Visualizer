@@ -101,8 +101,12 @@ const buildDagFromTac = (tacList) => {
       id: `tac_node_${++idCounter}`,
       label: val,
       type: 'Leaf',
-      children: []
+      children: [],
+      vars: []
     };
+    if (isNaN(val) && !/^t\d+$/.test(val)) {
+      node.vars.push(val);
+    }
     nodesMap.set(key, node);
     valueNodes[val] = node;
     return node;
@@ -118,6 +122,10 @@ const buildDagFromTac = (tacList) => {
       const sourceNode = getOrCreateLeaf(arg1);
       if (sourceNode) {
         valueNodes[res] = sourceNode;
+        if (!sourceNode.vars) sourceNode.vars = [];
+        if (!sourceNode.vars.includes(res)) {
+          sourceNode.vars.push(res);
+        }
       }
     } else {
       const leftNode = getOrCreateLeaf(arg1);
@@ -135,11 +143,30 @@ const buildDagFromTac = (tacList) => {
           id: `tac_node_${++idCounter}`,
           label: op,
           type: 'Operator',
-          children: [leftNode, rightNode].filter(c => c !== null)
+          children: [leftNode, rightNode].filter(c => c !== null),
+          vars: []
         };
         nodesMap.set(key, opNode);
       }
       valueNodes[res] = opNode;
+      if (!opNode.vars) opNode.vars = [];
+      if (!opNode.vars.includes(res)) {
+        opNode.vars.push(res);
+      }
+    }
+  });
+  
+  // Format labels to include their variable bindings
+  nodesMap.forEach((node) => {
+    if (node.vars && node.vars.length > 0) {
+      const userVars = node.vars.filter(v => !/^t\d+$/.test(v));
+      const varsToDisplay = userVars.length > 0 ? userVars : node.vars;
+      
+      // Only prefix if variable name is different from the leaf label itself
+      const uniqueVars = varsToDisplay.filter(v => v !== node.label);
+      if (uniqueVars.length > 0) {
+        node.label = `${uniqueVars.join(', ')} = ${node.label}`;
+      }
     }
   });
   

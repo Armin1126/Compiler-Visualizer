@@ -43,7 +43,7 @@ function DagVisualizer({ ast, tac }) {
     rawNodes.forEach(n => layers[heights[n.id]].push(n));
 
     const maxLayerSize = Math.max(...Object.values(layers).map(l => l.length));
-    const nodeW = 100;
+    const nodeW = 130;
     const xGap = 50;
     const ySpacing = 110;
     const w = Math.max(700, maxLayerSize * (nodeW + xGap) + 100);
@@ -116,7 +116,7 @@ function DagVisualizer({ ast, tac }) {
     return <div style={{ color: 'var(--text-muted)', padding: '1.5rem', textAlign: 'center', fontSize: '0.85rem' }}>No statements to construct DAG.</div>;
   }
 
-  const nodeW = 100;
+  const nodeW = 130;
   const nodeH = 40;
   const zoomPercent = Math.round(zoom * 100);
 
