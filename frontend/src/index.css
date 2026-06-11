@@ -2279,6 +2279,22 @@ tbody tr:hover {
 .opt-status-kept { background: rgba(0,0,0,0.05); color: var(--text-muted); }
 .opt-rule-badge { display: inline-flex; align-items: center; gap: 2px; padding: 2px 6px; border: 1px solid; border-radius: 4px; font-size: 0.68rem; }
 
+.opt-transform-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  align-items: flex-start;
+  line-height: 1.2;
+}
+.opt-original-strike {
+  text-decoration: line-through;
+  opacity: 0.5;
+  font-size: 0.72rem;
+}
+.opt-optimized-value {
+  font-weight: 600;
+}
+
 /* Rules panel */
 .opt-rules-panel { margin-top: 1.5rem; border-top: 1px solid var(--border-color); }
 .opt-rules-header { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; cursor: pointer; font-weight: 600; color: var(--text-main); }
