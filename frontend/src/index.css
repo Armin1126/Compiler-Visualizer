@@ -2389,3 +2389,88 @@ tbody tr:hover {
   color: var(--text-main);
   padding: 0.5rem;
 }
+
+/* ────────────────────────────────────────────
+   Mobile View Responsiveness (Screens under 768px)
+   ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Main workstation container */
+  .app-container {
+    height: auto !important;
+    min-height: 100vh;
+    padding: 0.5rem !important;
+    gap: 0.75rem !important;
+  }
+
+  /* Compact toolbar */
+  .toolbar.compact {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+  .toolbar-left, .toolbar-right {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+  }
+  .toolbar-right {
+    justify-content: flex-end;
+  }
+  .toolbar-center {
+    width: 100%;
+    order: -1;
+    text-align: center;
+  }
+  .toolbar-center h2 {
+    font-size: 0.95rem;
+  }
+
+  /* Pipeline navigation scrolling */
+  .pipeline-row {
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    padding: 0.4rem 0.2rem !important;
+    width: 100%;
+    box-sizing: border-box;
+    scrollbar-width: none; /* Firefox */
+  }
+  .pipeline-row::-webkit-scrollbar {
+    display: none; /* Safari/Chrome */
+  }
+  .pipeline-phase {
+    flex: 0 0 auto !important;
+    min-width: 110px;
+    padding: 0.5rem 0.4rem !important;
+  }
+
+  /* Stacking the workspace panels vertically */
+  .main-content {
+    flex-direction: column !important;
+    overflow: visible !important;
+    height: auto !important;
+    gap: 1rem !important;
+  }
+
+  /* Left and right panels */
+  .panel {
+    flex: none !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 380px;
+    max-height: 520px;
+  }
+  
+  .panel-content {
+    padding: 0 1rem 1rem 1rem !important;
+  }
+
+  /* Hide the splitter */
+  .splitter {
+    display: none !important;
+  }
+
+  /* Codegen register grid */
+  .codegen-reg-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
