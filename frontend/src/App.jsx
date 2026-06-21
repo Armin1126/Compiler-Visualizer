@@ -54,6 +54,7 @@ function App() {
   const [result, setResult] = useState(null);
   const [activePhase, setActivePhase] = useState('LEXER');
   const [loading, setLoading] = useState(false);
+  const [compileError, setCompileError] = useState(null);
   const [terminalLogs, setTerminalLogs] = useState([]);
   
   // Graphical sub-view tabs
@@ -97,6 +98,7 @@ function App() {
 
   const handleCompile = async () => {
     setLoading(true);
+    setCompileError(null);
     try {
       const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
       const res = await axios.post(`${baseUrl}/api/compiler/compile`, {
@@ -128,9 +130,15 @@ function App() {
       setIcgTab('table');
       setOptimizerTab('walkthrough');
     } catch (err) {
-      console.error(err);
-      const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-      alert(`Compilation error. Is the backend running? (Endpoint: ${baseUrl})`);
+      console.error('[Compiler] Request failed:', err?.message);
+      // Surface a friendly message — never expose the endpoint URL or internals
+      if (err?.response?.status === 429) {
+        setCompileError('Too many requests. Please wait a moment and try again.');
+      } else if (err?.response?.data?.error) {
+        setCompileError(err.response.data.error);
+      } else {
+        setCompileError('Could not reach the compiler backend. Please try again later.');
+      }
     } finally {
       setLoading(false);
     }
@@ -376,6 +384,12 @@ function App() {
               </button>
             </div>
           </div>
+          {compileError && (
+            <div className="compile-error-banner" role="alert">
+              <span>{compileError}</span>
+              <button className="compile-error-dismiss" onClick={() => setCompileError(null)} aria-label="Dismiss">&times;</button>
+            </div>
+          )}
 
           <div className="pipeline-row">
             {PHASES.map((phase, idx) => (

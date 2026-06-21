@@ -11,7 +11,10 @@ import com.compiler.backend.models.Token;
 
 @Service
 public class LexerService {
-    
+
+    /** Maximum number of characters accepted before the regex engine is invoked. */
+    private static final int MAX_INPUT_LENGTH = 8_000;
+
     private static final String REGEX = 
         "(?<KEYWORD>\\blet\\b)|" +
         "(?<IDENTIFIER>[a-zA-Z_][a-zA-Z0-9_]*)|" +
@@ -26,7 +29,14 @@ public class LexerService {
     public List<Token> tokenize(String input) {
         List<Token> tokens = new ArrayList<>();
         if (input == null || input.isEmpty()) return tokens;
-        
+
+        // Guard: reject inputs that are too long before handing them to the regex engine.
+        // This prevents potential ReDoS and unbounded CPU/memory consumption.
+        if (input.length() > MAX_INPUT_LENGTH) {
+            throw new IllegalArgumentException(
+                "Input exceeds the maximum allowed length of " + MAX_INPUT_LENGTH + " characters.");
+        }
+
         Matcher matcher = PATTERN.matcher(input);
         int line = 1;
         int column = 1;
