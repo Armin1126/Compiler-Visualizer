@@ -100,10 +100,7 @@ function App() {
     setLoading(true);
     setCompileError(null);
     try {
-      let baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-      if (baseUrl === 'https://compiler-visualizer.onrender.com') {
-        baseUrl = 'https://compiler-visualizer-backend.onrender.com';
-      }
+      const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
       const res = await axios.post(`${baseUrl}/api/compiler/compile`, {
         sourceCode: code
       });
